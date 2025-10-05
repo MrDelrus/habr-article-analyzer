@@ -21,7 +21,7 @@ This project was developed collaboratively by the following team members:
 
 Project's supervisor:
 
-- Sergey Sysoev
+- Sergey Sysoev - [Telegram](https://t.me/yegerless)
 
 ## Work Plan
 
