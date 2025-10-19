@@ -9,10 +9,10 @@ mypy>=1.5.1
 # Testing
 pytest>=8.2.0
 nbval>=0.9.7
-nbqa>=2.0.0
+nbqa>=1.9.0
 
 # Security
-bandit>=2.2.2
+bandit>=1.7.8
 
 # Git hooks
-pre-commit>=3.3.3
+pre-commit>=3.7.1
