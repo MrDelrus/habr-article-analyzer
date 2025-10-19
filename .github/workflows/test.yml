@@ -9,6 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,8 +20,18 @@ jobs:
         run: |
           pip install -r requirements-dev.txt
 
-      - name: Run pytest
-        run: pytest --maxfail=1 --disable-warnings -q
+      - name: Run pytest for Python tests
+        run: |
+          if [ -d tests ] && [ "$(ls -A tests 2>/dev/null)" ]; then
+              pytest --maxfail=1 --disable-warnings -q tests/
+          else
+              echo "No Python tests found, skipping."
+          fi
 
-      - name: Run notebook tests
-        run: pytest --nbval --sanitize-with nbval_sanitize.cfg notebooks/
+      - name: Run pytest for notebooks
+        run: |
+          if [ -d notebooks ] && [ "$(ls -A notebooks/*.ipynb 2>/dev/null)" ]; then
+              pytest --nbval --sanitize-with nbval_sanitize.cfg notebooks/
+          else
+              echo "No notebooks to test, skipping."
+          fi

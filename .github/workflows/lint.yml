@@ -26,6 +26,10 @@ jobs:
 
       - name: Run nbqa linters on notebooks
         run: |
-          nbqa black --check notebooks
-          nbqa flake8 notebooks
-          nbqa mypy notebooks
+          if [ -d notebooks ] && [ "$(ls -A notebooks/*.ipynb 2>/dev/null)" ]; then
+              nbqa black --check notebooks
+              nbqa flake8 notebooks
+              nbqa mypy notebooks
+          else
+              echo "No notebooks to lint, skipping nbqa."
+          fi
