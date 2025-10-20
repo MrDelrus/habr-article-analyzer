@@ -1,0 +1,31 @@
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "env",
+    ".venv",
+    "build",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+python_version = "3.11"
+warn_unused_configs = true
+warn_return_any = true
+
+[tool.nbqa.config]
+black = true
+flake8 = true
+mypy = true
+files = ["notebooks/*.ipynb"]

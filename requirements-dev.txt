@@ -1,0 +1,18 @@
+# Code formatting
+black>=24.3.0
+isort>=6.1.0
+
+# Linting & type checking
+flake8>=7.1.0
+mypy>=1.5.1
+
+# Testing
+pytest>=8.2.0
+nbval>=0.9.7
+nbqa>=1.9.0
+
+# Security
+bandit>=1.7.8
+
+# Git hooks
+pre-commit>=3.7.1
