@@ -12,6 +12,27 @@
 
 **Description:** This project addresses a text classification problem using various approaches from classical machine learning and modern natural language processing (NLP). The expected outcomes include a functional prototype capable of tag prediction and a research report summarizing the methodology and results.
 
+## Project Structure
+
+The repository follows a modular structure inspired by common best practices in machine learning and data science projects. Each directory has a clearly defined purpose to ensure reproducibility, scalability, and maintainability.
+
+```
+├── .github/workflows/        # CI/CD workflows for automated testing, linting, and deployment
+├── data/                     # Datasets
+├── docs/                     # Project documentation, API references and architecture diagrams
+├── models/                   # Trained and serialized models, model checkpoints
+├── notebooks/                # Jupyter notebooks for exploration, prototyping, and EDA
+├── src/                      # Source code for the project
+├── tests/                    # Unit and integration tests
+├── .pre-commit-config.yaml   # Configuration for pre-commit hooks (linting, formatting, etc.)
+├── .gitignore                # Git ignore rules
+├── LICENSE                   # Project license
+├── README.md                 # Project documentation (this file)
+├── pyproject.toml            # Project configuration and dependencies
+├── requirements.txt          # Core dependencies
+├── requirements-dev.txt      # Development dependencies (testing, linting, etc.)
+```
+
 ## Team Members
 
 This project was developed collaboratively by the following team members:
