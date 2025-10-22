@@ -17,8 +17,8 @@ pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
-- `requirements.txt` - runtime/project dependencies
-- `requirements-dev.txt` - development dependencies (linters, tests, nbqa, pre-commit hooks)
+- [requirements.txt](../requirements.txt) - runtime/project dependencies
+- [requirements-dev.txt](../requirements-dev.txt) - development dependencies (linters, tests, nbqa, pre-commit hooks)
 
 3. Set up pre-commit hooks (one-time):
 
@@ -51,7 +51,7 @@ deactivate
 ## Reviewer Setup
 
 - Reviewers **do not need** development dependencies or pre-commit hooks
-- Only `requirements.txt` is necessary:
+- Only [requirements.txt](../requirements.txt) is necessary:
 
 ```
 python -m venv env

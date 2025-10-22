@@ -26,6 +26,7 @@ warn_return_any = true
 
 [tool.nbqa.config]
 black = true
+isort = true
 flake8 = true
 mypy = true
 files = ["notebooks/*.ipynb"]

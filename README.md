@@ -17,20 +17,33 @@
 The repository follows a modular structure inspired by common best practices in machine learning and data science projects. Each directory has a clearly defined purpose to ensure reproducibility, scalability, and maintainability.
 
 ```
-├── .github/workflows/        # CI/CD workflows for automated testing, linting, and deployment
-├── data/                     # Datasets
-├── docs/                     # Project documentation, API references and architecture diagrams
-├── models/                   # Trained and serialized models, model checkpoints
-├── notebooks/                # Jupyter notebooks for exploration, prototyping, and EDA
-├── src/                      # Source code for the project
-├── tests/                    # Unit and integration tests
-├── .pre-commit-config.yaml   # Configuration for pre-commit hooks (linting, formatting, etc.)
-├── .gitignore                # Git ignore rules
-├── LICENSE                   # Project license
-├── README.md                 # Project documentation (this file)
-├── pyproject.toml            # Project configuration and dependencies
-├── requirements.txt          # Core dependencies
-├── requirements-dev.txt      # Development dependencies (testing, linting, etc.)
+habr_article_analyzer/
+├── .github/workflows/            # CI/CD workflows for automated testing, linting, and deployment
+├── data/
+│   ├── raw/                      # Original raw datasets (not tracked in Git)
+│   ├── interim/                  # Partially processed datasets (not tracked in Git)
+│   ├── processed/                # Fully processed datasets for training (not tracked in Git)
+│   └── tiny/                     # Small dataset for CI/tests (tracked in Git)
+├── docs/                         # Project documentation, API references, architecture diagrams
+│   └── README.md                 # Project Setup Guide (developer & reviewer instructions)
+├── env/                          # Python virtual environment (ignored in Git)
+├── logs/                         # Training/debug logs (ignored in Git)
+├── models/                       # Trained model weights (ignored in Git)
+├── notebooks/                    # Jupyter notebooks for exploration, prototyping, and EDA
+├── outputs/                      # Generated artifacts: figures, predictions, reports (ignored in Git)
+├── src/                          # Source code for the project
+│   └── habr_article_analyzer/
+│       └── __init__.py
+├── tests/                        # Unit and integration tests
+├── .gitignore                    # Git ignore rules
+├── .pre-commit-config.yaml       # Pre-commit configuration for linters/formatters
+├── LICENSE                       # Project license
+├── README.md                     # Project documentation
+├── pyproject.toml                # Project configuration and dependencies
+├── requirements.in               # Runtime dependencies
+├── requirements-dev.in           # Dev / CI dependencies
+├── requirements.txt              # Pinned runtime dependencies
+└── requirements-dev.txt          # Pinned dev dependencies
 ```
 
 ## Team Members
