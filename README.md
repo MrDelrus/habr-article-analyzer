@@ -44,6 +44,13 @@ Project's supervisor:
 3. Visualization of results and perfomance metrics.
 4. Recommendations for further development.
 
+## Documentation
+
+See the following guides in the [docs/](docs/) folder:
+
+- [Setup Guide](docs/setup_guide.md)
+- [Project Structure](docs/project_structure.md)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
