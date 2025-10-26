@@ -4,23 +4,13 @@ This document explains how to set up and work with the project environment. It p
 
 ## Developer Setup
 
-1. Create and activate a virtual environment. For Linux/macOS:
+1. Create a virtual environment (one-time). For Linux/macOS:
 
 ```
 python -m venv env
-source env/bin/activate
 ```
 
-- Always activate your virtual environment before working with the project
-- This prevents version conflicts between developers and ensures consistent behavior
-
-2. Install pip.and pip-tools. Use the following versions:
-
-```
-pip install "pip==25.1" "pip-tools==7.5.1"
-```
-
-3. Install dependencies:
+2. Install dependencies (from activated environment):
 
 ```
 pip install -r requirements.txt
@@ -30,7 +20,7 @@ pip install -r requirements-dev.txt
 - [requirements.txt](../requirements.txt) - runtime/project dependencies
 - [requirements-dev.txt](../requirements-dev.txt) - development dependencies (linters, tests, nbqa, pre-commit hooks)
 
-4. Set up pre-commit hooks:
+3. Set up pre-commit hooks (one-time):
 
 ```
 pre-commit install
@@ -38,6 +28,15 @@ pre-commit install --hook-type commit-msg
 ```
 
 - Ensures code is automatically checked/formatted before commits
+
+4. Activate the environment (every session):
+
+```
+source env/bin/activate
+```
+
+- Always activate your virtual environment before working with the project
+- This prevents version conflicts between developers and ensures consistent behavior
 
 5. Deactivate the environment:
 
@@ -57,7 +56,6 @@ deactivate
 ```
 python -m venv env
 source env/bin/activate
-pip install "pip==25.1" "pip-tools==7.5.1"
 pip install -r requirements.txt
 ```
 
