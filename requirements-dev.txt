@@ -57,7 +57,9 @@ coverage==7.11.0
 debugpy==1.8.17
     # via ipykernel
 decorator==5.2.1
-    # via ipython
+    # via
+    #   ipython
+    #   pytest-mypy-plugins
 defusedxml==0.7.1
     # via semgrep
 distlib==0.4.0
@@ -71,7 +73,9 @@ face==24.0.0
 fastjsonschema==2.21.2
     # via nbformat
 filelock==3.20.0
-    # via virtualenv
+    # via
+    #   pytest-mypy
+    #   virtualenv
 flake8==7.3.0
     # via -r requirements-dev.in
 glom==22.1.0
@@ -111,11 +115,13 @@ isort==7.0.0
     # via -r requirements-dev.in
 jedi==0.19.2
     # via ipython
+jinja2==3.1.6
+    # via pytest-mypy-plugins
 jsonschema==4.25.1
     # via
     #   mcp
     #   nbformat
-    #   semgrep
+    #   pytest-mypy-plugins
 jsonschema-specifications==2025.9.1
     # via jsonschema
 jupyter-client==8.6.3
@@ -129,6 +135,8 @@ jupyter-core==5.9.1
     #   nbformat
 markdown-it-py==4.0.0
     # via rich
+markupsafe==3.0.3
+    # via jinja2
 matplotlib-inline==0.1.7
     # via
     #   ipykernel
@@ -140,7 +148,10 @@ mcp==1.16.0
 mdurl==0.1.2
     # via markdown-it-py
 mypy==1.18.2
-    # via -r requirements-dev.in
+    # via
+    #   -r requirements-dev.in
+    #   pytest-mypy
+    #   pytest-mypy-plugins
 mypy-extensions==1.1.0
     # via
     #   black
@@ -192,6 +203,7 @@ packaging==25.0
     #   ipykernel
     #   opentelemetry-instrumentation
     #   pytest
+    #   pytest-mypy-plugins
     #   semgrep
 parso==0.8.5
     # via jedi
@@ -248,6 +260,12 @@ pytest==8.4.2
     # via
     #   -r requirements-dev.in
     #   nbval
+    #   pytest-mypy
+    #   pytest-mypy-plugins
+pytest-mypy==1.0.1
+    # via -r requirements-dev.in
+pytest-mypy-plugins==3.2.0
+    # via -r requirements-dev.in
 python-dateutil==2.9.0.post0
     # via jupyter-client
 python-dotenv==1.1.1
@@ -257,7 +275,9 @@ python-multipart==0.0.20
 pytokens==0.2.0
     # via black
 pyyaml==6.0.3
-    # via pre-commit
+    # via
+    #   pre-commit
+    #   pytest-mypy-plugins
 pyzmq==27.1.0
     # via
     #   ipykernel
@@ -266,6 +286,8 @@ referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
+regex==2025.10.23
+    # via pytest-mypy-plugins
 requests==2.32.5
     # via
     #   opentelemetry-exporter-otlp-proto-http
@@ -300,6 +322,8 @@ tomli==2.0.2
     # via
     #   nbqa
     #   semgrep
+tomlkit==0.13.3
+    # via pytest-mypy-plugins
 tornado==6.5.2
     # via
     #   ipykernel
@@ -312,6 +336,8 @@ traitlets==5.14.3
     #   jupyter-core
     #   matplotlib-inline
     #   nbformat
+types-requests==2.32.4.20250913
+    # via -r requirements-dev.in
 typing-extensions==4.15.0
     # via
     #   anyio
@@ -334,6 +360,7 @@ urllib3==2.5.0
     # via
     #   requests
     #   semgrep
+    #   types-requests
 uvicorn==0.38.0
     # via mcp
 virtualenv==20.35.3

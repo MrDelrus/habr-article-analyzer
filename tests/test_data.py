@@ -14,10 +14,10 @@ from habr_article_analyzer import data
 @pytest.fixture
 def tmp_tiny_csv(tmp_path: Path) -> Path:
     """Create a temporary tiny CSV file for testing."""
-    p = tmp_path / "tiny.csv"
+    dataset_path = tmp_path / "tiny.csv"
     df = pd.DataFrame({"a": [1, 2], "b": [3, 4]})
-    df.to_csv(p, index=False)
-    return p
+    df.to_csv(dataset_path, index=False)
+    return dataset_path
 
 
 # Unit tests
@@ -45,7 +45,7 @@ def test_download_dataset_skips_if_exists(
     caplog.set_level("INFO")
     file_path = tmp_path / "habr.jsonl.zst"
     file_path.write_text("already here")
-    data.download_dataset(local_path=str(file_path))
+    data.download_dataset(local_path=file_path)
     assert "skipping download" in caplog.text.lower()
 
 
@@ -60,7 +60,7 @@ def test_load_dataset_reads_zstd_jsonlines(tmp_path: Path) -> None:
     fpath = tmp_path / "fake.jsonl.zst"
     fpath.write_bytes(compressed)
 
-    df = data.load_dataset_from_zst(local_path=str(fpath))
+    df = data.load_dataset_from_zst(local_path=fpath)
     assert isinstance(df, pd.DataFrame)
     assert len(df) == 2
     assert "x" in df.columns
