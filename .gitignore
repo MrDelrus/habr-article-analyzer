@@ -12,3 +12,4 @@ models/
 logs/
 outputs/
 .ipynb_checkpoints/
+*.egg-info
