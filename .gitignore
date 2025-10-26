@@ -12,6 +12,3 @@ models/
 logs/
 outputs/
 .ipynb_checkpoints/
-*.egg-info
-.mypy_cache/
-.pytest_cache/
