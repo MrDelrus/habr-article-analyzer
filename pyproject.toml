@@ -30,3 +30,11 @@ black = true
 isort = true
 flake8 = true
 files = ["notebooks/*.ipynb"]
+
+[project]
+name = "habr_article_analyzer"
+version = "0.1.0"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]

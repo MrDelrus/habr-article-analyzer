@@ -33,3 +33,11 @@ jobs:
           else
               echo "No Python tests found, skipping."
           fi
+
+      - name: Run pytest for notebooks
+        run: |
+          if [ -d notebooks ] && [ "$(ls -A notebooks/*.ipynb 2>/dev/null)" ]; then
+              pytest -m "not slow" --nbval --sanitize-with nbval_sanitize.cfg notebooks/ || [ $? -eq 5 ] || exit $?
+          else
+              echo "No notebooks to test, skipping."
+          fi

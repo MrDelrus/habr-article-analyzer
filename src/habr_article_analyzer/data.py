@@ -9,14 +9,12 @@ import requests
 import zstandard as zstd
 from tqdm import tqdm
 
-from habr_article_analyzer.settings import settings
-
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Default paths
-DEFAULT_FULL_PATH = settings.data_dir / "raw/habr.jsonl.zst"
-DEFAULT_TINY_PATH = settings.data_dir / "tiny/habr.csv"
+DEFAULT_FULL_PATH = Path("data/raw/habr.jsonl.zst")
+DEFAULT_TINY_PATH = Path("data/tiny/habr.csv")
 URL_FULL = "https://huggingface.co/datasets/IlyaGusev/habr/resolve/main/habr.jsonl.zst"
 
 
@@ -46,9 +44,7 @@ def download_dataset(local_path: Path = DEFAULT_FULL_PATH, url: str = URL_FULL) 
     logger.info("Download completed!")
 
 
-def load_dataset_from_zst(
-    local_path: Path = DEFAULT_FULL_PATH, rows_num: int | None = None
-) -> pd.DataFrame:
+def load_dataset_from_zst(local_path: Path = DEFAULT_FULL_PATH) -> pd.DataFrame:
     """Load dataset from disk into a pandas DataFrame."""
     if not os.path.exists(local_path):
         raise FileNotFoundError(
@@ -63,8 +59,6 @@ def load_dataset_from_zst(
             text_reader = io.TextIOWrapper(reader, encoding="utf-8")
             for obj in tqdm(jsonlines.Reader(text_reader), desc="Reading records"):
                 data.append(obj)
-                if rows_num is not None and len(data) >= rows_num:
-                    break
 
     logger.info(f"Loaded {len(data)} records")
     return pd.DataFrame(data)
