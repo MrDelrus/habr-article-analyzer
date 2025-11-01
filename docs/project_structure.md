@@ -21,6 +21,7 @@ habr_article_analyzer/
 ├── outputs/                      # Generated artifacts: figures, predictions, reports (ignored in Git)
 ├── src/                          # Source code for the project
 │   └── habr_article_analyzer/
+│       ├── data.py               # Functions to download and load the Habr dataset
 │       └── __init__.py
 ├── tests/                        # Unit and integration tests
 ├── .gitignore                    # Git ignore rules
