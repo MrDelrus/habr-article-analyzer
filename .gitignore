@@ -11,3 +11,4 @@ data/processed/
 logs/
 outputs/
 .ipynb_checkpoints/
+*.egg-info
