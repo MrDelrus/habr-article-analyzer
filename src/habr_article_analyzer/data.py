@@ -13,8 +13,11 @@ from tqdm import tqdm
 logger = logging.getLogger(__name__)
 
 # Default paths
-DEFAULT_FULL_PATH = Path("data/raw/habr.jsonl.zst")
-DEFAULT_TINY_PATH = Path("data/tiny/habr.csv")
+HERE = Path(__file__).parent.resolve()
+PROJECT_ROOT = HERE.parent.parent
+
+DEFAULT_FULL_PATH = PROJECT_ROOT / "data/raw/habr.jsonl.zst"
+DEFAULT_TINY_PATH = PROJECT_ROOT / "data/tiny/habr.csv"
 URL_FULL = "https://huggingface.co/datasets/IlyaGusev/habr/resolve/main/habr.jsonl.zst"
 
 
