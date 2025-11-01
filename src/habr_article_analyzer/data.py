@@ -46,7 +46,9 @@ def download_dataset(local_path: Path = DEFAULT_FULL_PATH, url: str = URL_FULL) 
     logger.info("Download completed!")
 
 
-def load_dataset_from_zst(local_path: Path = DEFAULT_FULL_PATH) -> pd.DataFrame:
+def load_dataset_from_zst(
+    local_path: Path = DEFAULT_FULL_PATH, rows_num: int = None
+) -> pd.DataFrame:
     """Load dataset from disk into a pandas DataFrame."""
     if not os.path.exists(local_path):
         raise FileNotFoundError(
@@ -61,6 +63,8 @@ def load_dataset_from_zst(local_path: Path = DEFAULT_FULL_PATH) -> pd.DataFrame:
             text_reader = io.TextIOWrapper(reader, encoding="utf-8")
             for obj in tqdm(jsonlines.Reader(text_reader), desc="Reading records"):
                 data.append(obj)
+                if rows_num is not None and len(data) >= rows_num:
+                    break
 
     logger.info(f"Loaded {len(data)} records")
     return pd.DataFrame(data)
