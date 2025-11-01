@@ -18,7 +18,13 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements-dev.txt
+          python -m pip install "pip==25.1" "pip-tools==7.5.1"
+          python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
+          python -m pip install -e .
+
+      - name: List installed packages
+        run: pip list
 
       - name: Run pre-commit hooks
         run: |

@@ -6,17 +6,6 @@ target-version = ["py311"]
 profile = "black"
 line_length = 88
 
-[tool.flake8]
-max-line-length = 88
-extend-ignore = ["E203", "W503"]
-exclude = [
-    ".git",
-    "__pycache__",
-    "env",
-    ".venv",
-    "build",
-]
-
 [tool.mypy]
 ignore_missing_imports = true
 strict = true
@@ -30,3 +19,11 @@ isort = true
 flake8 = true
 mypy = true
 files = ["notebooks/*.ipynb"]
+
+[project]
+name = "habr_article_analyzer"
+version = "0.1.0"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
