@@ -1,11 +1,13 @@
 from collections import abc
-from typing import Dict, List, Literal, Tuple
+from typing import Literal
 
 import numpy as np
 import pandas as pd
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MultiLabelBinarizer
+
+Index = type[str | int | list[str] | list[int] | np.ndarray[int] | None]
 
 
 class Target:
@@ -15,7 +17,6 @@ class Target:
     labels: list[str]
     binary_mask: np.ndarray | sp.spmatrix
     sparse: bool
-    Index = str | int | list[str] | list[int] | np.ndarray[int]
 
     def __init__(self, dataset: pd.DataFrame, column_name: str, sparse: bool = False):
         self.dataset = dataset
@@ -41,11 +42,11 @@ class Target:
         return targets.apply(lambda x: [x] if isinstance(x, str) else x)
 
     def label_to_id(self, label: str) -> int:
-        if not label in self.labels:
+        if label not in self.labels:
             raise KeyError("{} not in labels".format(label))
         return self.labels.index(label)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.labels)
 
     def __getitem__(self, idx: Index) -> np.ndarray | sp.spmatrix:
@@ -67,7 +68,7 @@ class Target:
         else:
             return self.binary_mask[:, idx]
 
-    def get_coverage(self, idx: Index = None) -> float:
+    def get_coverage(self, idx: Index = None) -> np.ndarray | float:
         """Вычисляет покрытие (долю документов с хотя бы одним из указанных лейблов)."""
         if idx is None:
             idx = self.labels

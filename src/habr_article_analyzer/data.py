@@ -47,7 +47,7 @@ def download_dataset(local_path: Path = DEFAULT_FULL_PATH, url: str = URL_FULL) 
 
 
 def load_dataset_from_zst(
-    local_path: Path = DEFAULT_FULL_PATH, rows_num: int = None
+    local_path: Path = DEFAULT_FULL_PATH, rows_num: int | None = None
 ) -> pd.DataFrame:
     """Load dataset from disk into a pandas DataFrame."""
     if not os.path.exists(local_path):

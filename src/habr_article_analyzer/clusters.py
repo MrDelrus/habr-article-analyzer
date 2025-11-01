@@ -8,7 +8,7 @@ from habr_article_analyzer.targets import Target
 
 
 class Embedder:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def encode(self, texts: list[str]) -> np.ndarray:
@@ -52,11 +52,11 @@ class TextClusterization:
     def fit_predict(self, X: list[str], **kwargs) -> np.ndarray:
         return self.clusters.fit_predict(self.embedder.encode(X), **kwargs)
 
-    def get_clusters(self, X: list[str], **kwargs) -> dict[int : list[str]]:
+    def get_clusters(self, X: list[str], **kwargs) -> dict[int, list[str]]:
         return TextClusterization._get_clusters(self.fit_predict(X, **kwargs), X)
 
     @staticmethod
-    def _get_clusters(clusters: np.ndarray, X: list[str]) -> dict[int : list[str]]:
+    def _get_clusters(clusters: np.ndarray, X: list[str]) -> dict[int, list[str]]:
         result = defaultdict(list)
         for key, value in zip(clusters, X):
             result[int(key)].append(value)

@@ -1,9 +1,6 @@
-from collections.abc import Iterable
-
 import numpy as np
 import pandas as pd
 import pytest
-from sklearn.preprocessing import MultiLabelBinarizer
 
 from habr_article_analyzer.targets import Target
 
