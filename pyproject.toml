@@ -2,7 +2,7 @@
 name = "habr_article_analyzer"
 version = "0.1.0"
 description = "Analysis tools for Habr articles dataset"
-requires-python = "3.11"
+requires-python = ">=3.11"
 dependencies = []
 
 [tool.setuptools.packages.find]
