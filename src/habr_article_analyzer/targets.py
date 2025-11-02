@@ -7,7 +7,7 @@ import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MultiLabelBinarizer
 
-Index = type[str | int | list[str] | list[int] | np.ndarray[int] | None]
+Index = str | int | list[str] | list[int] | None
 
 
 class Target:
@@ -48,7 +48,7 @@ class Target:
     def _transform_sparce(
         matrix: sp.spmatrix,
         sparce_format: Literal["csc", "csr"] = "csr",
-        format_limit: int = 1000
+        format_limit: int = 1000,
     ) -> sp.spmatrix:
         if matrix.format == sparce_format:
             return matrix
@@ -58,9 +58,7 @@ class Target:
             return matrix.tocsr()
         if sparce_format == "csc":
             return matrix.tocsc()
-        raise ValueError(
-            f"Format {sparce_format} not supported. Use 'csc' or 'csr'"
-        )
+        raise ValueError(f"Format {sparce_format} not supported. Use 'csc' or 'csr'")
         return matrix
 
     @staticmethod
@@ -98,7 +96,12 @@ class Target:
         else:
             return self.binary_mask[:, idx]
 
-    def get_coverage(self, idx: Index = None, sparce_format: Literal["csc", "csr"] = "csc", format_limit: int = 1000) -> np.ndarray | float:
+    def get_coverage(
+        self,
+        idx: Index = None,
+        sparce_format: Literal["csc", "csr"] = "csc",
+        format_limit: int = 1000,
+    ) -> np.ndarray | float:
         """Вычисляет покрытие (долю документов с хотя бы одним из указанных лейблов)."""
         binary_submask = None
         if idx is None:
@@ -111,7 +114,9 @@ class Target:
             if binary_submask.shape[1] == 1:
                 return binary_submask.getnnz() / binary_submask.shape[0]
             else:
-                binary_submask = Target._transform_sparce(binary_submask, sparce_format, format_limit)
+                binary_submask = Target._transform_sparce(
+                    binary_submask, sparce_format, format_limit
+                )
                 has_any_label = binary_submask.max(axis=1).toarray().ravel() > 0
                 return has_any_label.mean()
         else:
@@ -123,7 +128,7 @@ class Target:
         self,
         idx: Index = None,
         sparce_format: Literal["csc", "csr"] = "csr",
-        format_limit: int = 1000
+        format_limit: int = 1000,
     ) -> np.ndarray | int:
         """Возвращает количество документов для каждого лейбла."""
         binary_submask = None
@@ -134,7 +139,9 @@ class Target:
             binary_submask = self[idx]
 
         if sp.issparse(binary_submask):
-            binary_submask = Target._transform_sparce(binary_submask, sparce_format, format_limit)
+            binary_submask = Target._transform_sparce(
+                binary_submask, sparce_format, format_limit
+            )
             result = binary_submask.sum(axis=0)
             result = np.array(result)
             result = result.ravel()

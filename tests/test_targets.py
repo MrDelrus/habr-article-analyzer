@@ -181,7 +181,6 @@ def test_get_coverage_all_labels(sample_dataset_multilabel: pd.DataFrame) -> Non
 
     assert isinstance(coverage, float)
     assert 0 <= coverage <= 1
-    # With our sample data: blue, green, red all appear at least once, and there is empty []
     assert coverage == 0.8
 
 
