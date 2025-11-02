@@ -1,45 +1,27 @@
 # Explorationaly Data Analasis
 
-## Analysis of Targets and Their Clustering
+## Анализ Таргетов и их кластеризация
 
-We explored various columns in the dataset as potential targets for the classification task. We also examined how these columns are automatically populated when writing articles on Habr.
+Мы исследовали различные колонки датасета, как кандидаты в таргеты для задачи классификации. Так же изучили как они заполняются механически при написании статьи на [хабре](habr.com).
 
-Among the four types of article tags available in the dataset, the “hubs” — Habr’s thematic sections — are the most suitable for our task.
+Из четырех видов различных тегов статей, представленных в датасете, лучше всего под нашу задачу подходят "хабы" - тематические разделы хабра.
 
-Although hubs are a good fit, they still require preprocessing, as there are over 2,000 of them.
+Хоть Хабы и подходят под нашу задачу, они все ещё нужндаются в предварительной обработке, так как их более 2000.
 
-We considered two approaches:
-- Selecting the top-N hubs that cover the majority of articles.
-- Clustering all hubs into N clusters.
+Мы рассмотрели два подхода:
+- выбрать топ-N хабов, обеспечивающих большое покрытие.
+- кластеризовать все хабы на N кластеров.
 
-As a result, we formulated three target variants, each with its own advantages and drawbacks:
+В итоге мы сформировали три варианта таргета, каждый из которых обладает своими преимуществами и недостатками.
 
-- **Top 150 hubs**, covering slightly less than 90% of articles
+- топ-150 хабов, обладающие покрытием чуть меньше 90%
+    * [+] такой подход скорее всего даст наилучшее качество на классификации топовых лейблов
+    * [-] модель не будет знать ничего про существование остальных 1900+ хабов
+- 75 кластеров, обеспечивающие 100% покрытие
+    * [+] абсолютное покрытие
+    * [-] самые крупные лейблы смешанны в кластерах, качество на них вероятно будет хуже, чем в первом подходе.
+- mixed решение: 55 хабов выделенные в "персональные кластера" и остальные хабы разбитые на 75 кластеров
+    * [+] комбинируются плюсы от обоих подходов: абсолютное покрытие и вероятно, хорошее качество на топе
+    * [-] пока не знаю, увидим когда будем обучаться
 
-    * [+] This approach is likely to achieve the best classification quality for the most popular labels.
-    * [-] The model will have no knowledge of the remaining 1,900+ hubs.
-
-- **75 clusters**, providing 100% coverage
-
-    * [+] Full coverage of all hubs.
-    * [-] The largest labels are mixed within clusters, so performance on top hubs is likely lower than in the first approach.
-- **Mixed solution**: 55 hubs assigned to “personal clusters” and the remaining hubs grouped into 75 clusters
-
-    * [+] Combines the advantages of both approaches: full coverage and likely good performance on top hubs.
-    * [-] The actual results are yet to be seen during model training.
-
-In the next steps, we will evaluate which approach provides the best end-to-end experience for our service users.
-
-## Analysis of Features
-
-Detailed analysis you can see in [jupyter notebook](../notebooks/exploratory_data_analysis/data_visualization.ipynb). Here only the key conclusions are mentioned:
-
-1. The data contains outliers that need to be filtered.
-
-2. The classes (`hubs`) are highly imbalanced. A small group of classes occurs very frequently, while most appear in only a few dozen articles.
-
-3. The distribution of statistics depends on the class.
-
-4. Different years contribute differently to the dataset — statistical distributions vary across years.
-
-5. The texts are technical; most words are nouns, while adjectives are relatively rare.
+В дальнейшем мы проверим, какой из них обеспечивает наилучший e2e опыт для пользователя нашего сервиса.
