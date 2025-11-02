@@ -7,6 +7,7 @@ repos:
       - id: trailing-whitespace
       - id: check-merge-conflict
       - id: check-added-large-files
+        args: ['--maxkb=10240']
 
   - repo: https://github.com/psf/black
     rev: 24.4.2
@@ -27,7 +28,7 @@ repos:
       - id: nbqa-black
         args: ["--nbqa-mutate"]
       - id: nbqa-isort
-        args: ["--nbqa-mutate"]
+      - id: nbqa-flake8
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
@@ -36,14 +37,14 @@ repos:
         args: ["--config=.flake8"]
 
 
-
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
       - id: mypy
+        args: ["--config-file=pyproject.toml"]
         additional_dependencies:
-        - types-requests
-        - pytest-mypy-plugins
+        - pydantic>=2.5
+        - pydantic-settings>=2.0
 
   - repo: https://github.com/returntocorp/semgrep
     rev: v1.35.0

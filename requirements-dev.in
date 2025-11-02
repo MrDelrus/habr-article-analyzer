@@ -5,9 +5,6 @@ flake8>=7.1.0
 
 # Type checking
 mypy>=1.5.1
-types-requests>=2.28.0
-pytest-mypy-plugins>=3.2.0
-pytest-mypy>=0.8.0
 
 # Testing
 pytest>=8.2.0
