@@ -21,3 +21,7 @@ requests>=2.31.0
 zstandard>=0.21.0
 jsonlines>=3.1.0
 tqdm>=4.66.0
+
+# Settings
+pydantic>=2.5
+pydantic-settings>=2.0

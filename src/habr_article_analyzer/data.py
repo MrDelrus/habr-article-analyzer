@@ -9,15 +9,14 @@ import requests
 import zstandard as zstd
 from tqdm import tqdm
 
+from habr_article_analyzer.settings import settings
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
 # Default paths
-HERE = Path(__file__).parent.resolve()
-PROJECT_ROOT = HERE.parent.parent
-
-DEFAULT_FULL_PATH = PROJECT_ROOT / "data/raw/habr.jsonl.zst"
-DEFAULT_TINY_PATH = PROJECT_ROOT / "data/tiny/habr.csv"
+DEFAULT_FULL_PATH = settings.data_dir / "raw/habr.jsonl.zst"
+DEFAULT_TINY_PATH = settings.data_dir / "tiny/habr.csv"
 URL_FULL = "https://huggingface.co/datasets/IlyaGusev/habr/resolve/main/habr.jsonl.zst"
 
 
