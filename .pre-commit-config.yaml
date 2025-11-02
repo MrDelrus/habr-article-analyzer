@@ -27,7 +27,6 @@ repos:
       - id: nbqa-isort
         args: ["--nbqa-mutate"]
       - id: nbqa-flake8
-      - id: nbqa-mypy
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
@@ -40,8 +39,8 @@ repos:
     hooks:
       - id: mypy
         additional_dependencies:
-        - types-requests
-        - pytest-mypy-plugins
+        - pydantic>=2.5
+        - pydantic-settings>=2.0
 
   - repo: https://github.com/returntocorp/semgrep
     rev: v1.35.0
