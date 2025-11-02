@@ -42,6 +42,7 @@ charset-normalizer==3.4.4
     # via requests
 click==8.1.8
     # via
+    #   -r requirements-dev.in
     #   black
     #   click-option-group
     #   semgrep
@@ -270,7 +271,9 @@ requests==2.32.5
     #   opentelemetry-exporter-otlp-proto-http
     #   semgrep
 rich==13.5.3
-    # via semgrep
+    # via
+    #   -r requirements-dev.in
+    #   semgrep
 rpds-py==0.27.1
     # via
     #   jsonschema
@@ -342,6 +345,8 @@ wcmatch==8.5.2
 wcwidth==0.2.14
     # via prompt-toolkit
 wrapt==1.17.3
-    # via opentelemetry-instrumentation
+    # via
+    #   -r requirements-dev.in
+    #   opentelemetry-instrumentation
 zipp==3.23.0
     # via importlib-metadata
