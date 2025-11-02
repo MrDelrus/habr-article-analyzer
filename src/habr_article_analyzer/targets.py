@@ -28,6 +28,9 @@ class Target:
             classes=self.labels,
             sparse_output=sparse,
         ).fit_transform(self.targets)
+        if sp.issparse(self.binary_mask):
+            self.binary_mask = self.binary_mask.tocsc()
+        self.labels_to_ids = Target._label_to_id(self.labels)
 
     @staticmethod
     def _get_labels(targets: pd.Series) -> list[str]:
@@ -41,10 +44,36 @@ class Target:
     def _as_str_list(targets: pd.Series) -> pd.Series:
         return targets.apply(lambda x: [x] if isinstance(x, str) else x)
 
+    @staticmethod
+    def _transform_sparce(
+        matrix: sp.spmatrix,
+        sparce_format: Literal["csc", "csr"] = "csr",
+        format_limit: int = 1000
+    ) -> sp.spmatrix:
+        if matrix.format == sparce_format:
+            return matrix
+        if matrix.shape[1] <= format_limit:
+            return matrix
+        if sparce_format == "csr":
+            return matrix.tocsr()
+        if sparce_format == "csc":
+            return matrix.tocsc()
+        raise ValueError(
+            f"Format {sparce_format} not supported. Use 'csc' or 'csr'"
+        )
+        return matrix
+
+    @staticmethod
+    def _label_to_id(labels: list[str]) -> dict[str, int]:
+        result = {}
+        for i, label in enumerate(labels):
+            result[label] = i
+        return result
+
     def label_to_id(self, label: str) -> int:
-        if label not in self.labels:
+        if label not in self.labels_to_ids:
             raise KeyError("{} not in labels".format(label))
-        return self.labels.index(label)
+        return self.labels_to_ids[label]
 
     def __len__(self) -> int:
         return len(self.labels)
@@ -61,6 +90,7 @@ class Target:
             )
 
         if sp.issparse(self.binary_mask):
+            assert self.binary_mask.format == "csc"
             result = self.binary_mask[:, idx]
             if isinstance(idx, (int, np.integer)):
                 return result.toarray().ravel()
@@ -68,17 +98,20 @@ class Target:
         else:
             return self.binary_mask[:, idx]
 
-    def get_coverage(self, idx: Index = None) -> np.ndarray | float:
+    def get_coverage(self, idx: Index = None, sparce_format: Literal["csc", "csr"] = "csc", format_limit: int = 1000) -> np.ndarray | float:
         """Вычисляет покрытие (долю документов с хотя бы одним из указанных лейблов)."""
+        binary_submask = None
         if idx is None:
             idx = self.labels
-
-        binary_submask = self[idx]
+            binary_submask = self.binary_mask
+        else:
+            binary_submask = self[idx]
 
         if sp.issparse(binary_submask):
             if binary_submask.shape[1] == 1:
                 return binary_submask.getnnz() / binary_submask.shape[0]
             else:
+                binary_submask = Target._transform_sparce(binary_submask, sparce_format, format_limit)
                 has_any_label = binary_submask.max(axis=1).toarray().ravel() > 0
                 return has_any_label.mean()
         else:
@@ -86,15 +119,25 @@ class Target:
                 return binary_submask.mean()
             return binary_submask.any(axis=1).mean()
 
-    def get_sizes(self, idx: Index = None) -> np.ndarray | int:
+    def get_sizes(
+        self,
+        idx: Index = None,
+        sparce_format: Literal["csc", "csr"] = "csr",
+        format_limit: int = 1000
+    ) -> np.ndarray | int:
         """Возвращает количество документов для каждого лейбла."""
+        binary_submask = None
         if idx is None:
             idx = self.labels
-
-        binary_submask = self[idx]
+            binary_submask = self.binary_mask
+        else:
+            binary_submask = self[idx]
 
         if sp.issparse(binary_submask):
-            result = np.array(binary_submask.sum(axis=0)).ravel()
+            binary_submask = Target._transform_sparce(binary_submask, sparce_format, format_limit)
+            result = binary_submask.sum(axis=0)
+            result = np.array(result)
+            result = result.ravel()
             if isinstance(idx, (str, int, np.integer)):
                 return int(result[0]) if result.size == 1 else int(result)
             return result
