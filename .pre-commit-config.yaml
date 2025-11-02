@@ -28,7 +28,7 @@ repos:
       - id: nbqa-black
         args: ["--nbqa-mutate"]
       - id: nbqa-isort
-      - id: nbqa-flake8
+        args: ["--nbqa-mutate"]
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
