@@ -5,36 +5,49 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=10240']
 
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
       - id: black
+        additional_dependencies: ["click==8.1.7"]
+        args: ["--config=pyproject.toml"]
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2
     hooks:
       - id: isort
+        args: ["--settings-path=pyproject.toml"]
 
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.0
     hooks:
       - id: nbqa-black
+        args: ["--nbqa-mutate"]
       - id: nbqa-isort
-      - id: nbqa-flake8
-      - id: nbqa-mypy
+        args: ["--nbqa-mutate"]
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
+        args: ["--config=.flake8"]
+
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
     hooks:
       - id: mypy
+        args: ["--config-file=pyproject.toml"]
+        additional_dependencies:
+        - pydantic>=2.5
+        - pydantic-settings>=2.0
 
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.5
+  - repo: https://github.com/returntocorp/semgrep
+    rev: v1.35.0
     hooks:
-      - id: bandit
+      - id: semgrep
+        args: ["--config=p/r2c-security-audit"]
