@@ -1,11 +1,8 @@
 import logging
-from pathlib import Path
-from typing import List
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from habr_article_analyzer.data import DEFAULT_FULL_PATH
 from habr_article_analyzer.data_loader import HabrDataset
 from habr_article_analyzer.settings import data_settings, settings
 from habr_article_analyzer.utils import save_jsonl_zst
@@ -47,39 +44,6 @@ def main() -> None:
     save_jsonl_zst(test_df, test_path)
 
     logger.info("Done")
-
-
-def split_dataset(
-    input_path: Path = DEFAULT_FULL_PATH,
-    train_path: Path = settings.raw_data_dir / "train.jsonl.zst",
-    val_path: Path = settings.raw_data_dir / "val.jsonl.zst",
-    test_path: Path = settings.raw_data_dir / "test.jsonl.zst",
-    val_size: float = data_settings.val_size,
-    test_size: float = data_settings.test_size,
-    columns: List[str] = ["id", "text_markdown", "hubs"],
-    reader_batch_size: int = data_settings.batch_size,
-    random_state: int = data_settings.random_seed,
-) -> None:
-    df = HabrDataset(
-        path=input_path, columns=columns, batch_size=reader_batch_size
-    ).get_dataframe()
-
-    train_df, test_val_df = train_test_split(
-        df, test_size=test_size + val_size, random_state=random_state, shuffle=True
-    )
-    val_df, test_df = train_test_split(
-        test_val_df,
-        test_size=test_size / (test_size + val_size),
-        random_state=random_state,
-        shuffle=True,
-    )
-    for dataset, path in [
-        (train_df, train_path),
-        (val_df, val_path),
-        (test_df, test_path),
-    ]:
-        logger.info("Saving to {}".format(path))
-        save_jsonl_zst(dataset, path)
 
 
 if __name__ == "__main__":

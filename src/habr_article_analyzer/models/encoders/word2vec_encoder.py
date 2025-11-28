@@ -4,10 +4,8 @@ from typing import Iterable, List
 import numpy as np
 from gensim.models import KeyedVectors
 
-from habr_article_analyzer.models.encoders.base import TextEncoder
 
-
-class BilingualWord2VecEncoder(TextEncoder):
+class BilingualWord2VecEncoder:
     """
     Encoder for mixed Russian + English texts using two Word2Vec/fastText models.
     """
