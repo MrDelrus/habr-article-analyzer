@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 import zstandard as zstd
 
-from habr_article_analyzer import data_utils
+from habr_article_analyzer import data
 
 # Fixtures
 
@@ -24,7 +24,7 @@ def tmp_tiny_csv(tmp_path: Path) -> Path:
 
 
 def test_load_tiny_dataset_reads_csv(tmp_tiny_csv: Path) -> None:
-    df = data_utils.load_tiny_dataset(local_path=tmp_tiny_csv)
+    df = data.load_tiny_dataset(local_path=tmp_tiny_csv)
     assert isinstance(df, pd.DataFrame)
     assert list(df.columns) == ["a", "b"]
     assert len(df) == 2
@@ -33,7 +33,7 @@ def test_load_tiny_dataset_reads_csv(tmp_tiny_csv: Path) -> None:
 def test_load_tiny_dataset_missing_file_raises(tmp_path: Path) -> None:
     missing = tmp_path / "missing.csv"
     with pytest.raises(FileNotFoundError):
-        data_utils.load_tiny_dataset(local_path=missing)
+        data.load_tiny_dataset(local_path=missing)
 
 
 def test_load_dataset_rows_num_limits_reading(tmp_path: Path) -> None:
@@ -49,12 +49,12 @@ def test_load_dataset_rows_num_limits_reading(tmp_path: Path) -> None:
     fpath.write_bytes(compressed)
 
     # Test reading only 3 rows
-    df = data_utils.load_dataset_from_zst(local_path=fpath, rows_num=3)
+    df = data.load_dataset_from_zst(local_path=fpath, rows_num=3)
     assert len(df) == 3
     assert list(df["id"]) == [0, 1, 2]
 
     # Test reading all rows when rows_num > actual rows
-    df_all = data_utils.load_dataset_from_zst(local_path=fpath, rows_num=10)
+    df_all = data.load_dataset_from_zst(local_path=fpath, rows_num=10)
     assert len(df_all) == 5
 
 
@@ -71,11 +71,11 @@ def test_load_dataset_rows_num_none_reads_all(tmp_path: Path) -> None:
     fpath.write_bytes(compressed)
 
     # Test with rows_num=None (default behavior)
-    df_none = data_utils.load_dataset_from_zst(local_path=fpath, rows_num=None)
+    df_none = data.load_dataset_from_zst(local_path=fpath, rows_num=None)
     assert len(df_none) == 3
 
     # Test with rows_num=1 for comparison
-    df_one = data_utils.load_dataset_from_zst(local_path=fpath, rows_num=1)
+    df_one = data.load_dataset_from_zst(local_path=fpath, rows_num=1)
     assert len(df_one) == 1
 
 
@@ -88,7 +88,7 @@ def test_download_dataset_skips_if_exists(
     caplog.set_level("INFO")
     file_path = tmp_path / "habr.jsonl.zst"
     file_path.write_text("already here")
-    data_utils.download_dataset(local_path=file_path)
+    data.download_dataset(local_path=file_path)
     assert "skipping download" in caplog.text.lower()
 
 
@@ -103,7 +103,7 @@ def test_load_dataset_reads_zstd_jsonlines(tmp_path: Path) -> None:
     fpath = tmp_path / "fake.jsonl.zst"
     fpath.write_bytes(compressed)
 
-    df = data_utils.load_dataset_from_zst(local_path=fpath)
+    df = data.load_dataset_from_zst(local_path=fpath)
     assert isinstance(df, pd.DataFrame)
     assert len(df) == 2
     assert "x" in df.columns
