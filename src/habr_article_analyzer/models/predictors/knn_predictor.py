@@ -4,25 +4,17 @@ import joblib
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-from habr_article_analyzer.models.predictors.base import TrainablePredictor
 
-
-class KNNPredictor(TrainablePredictor):
+class KNNPredictor:
     """
     Simple KNN binary classifier for baseline probability estimation.
     """
 
-    def __init__(
-        self,
-        n_neighbors: int = 5,
-        weights: str = "distance",
-        probability_threshold: float = 0.5,
-    ):
+    def __init__(self, n_neighbors: int = 5, weights: str = "distance"):
         self.model = KNeighborsClassifier(
             n_neighbors=n_neighbors,
             weights=weights,
         )
-        self.probability_threshold = probability_threshold
 
     # --------------------
     # Training
@@ -34,11 +26,12 @@ class KNNPredictor(TrainablePredictor):
     # Inference
     # --------------------
     def predict_proba(self, x: np.ndarray) -> float:
+        """
+        x: vector (n+m,)
+        Returns probability of class 1.
+        """
         proba = self.model.predict_proba(x.reshape(1, -1))[0, 1]
         return float(proba)
-
-    def predict(self, x: np.ndarray) -> int:
-        return int(self.predict_proba(x) >= self.probability_threshold)
 
     # --------------------
     # Loading & saving

@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
 
 
 class BaseHubClassifier(ABC):
@@ -23,14 +22,14 @@ class BaseHubClassifier(ABC):
         pass
 
     @abstractmethod
-    def save(self, path: str | Path) -> None:
+    def save(self, paths: dict[str, str]) -> None:
         """
         Save the model weights and components to disk.
         """
         pass
 
     @abstractmethod
-    def load(self, paths: str | Path) -> None:
+    def load(self, paths: dict[str, str]) -> None:
         """
         Load the model weights and components from disk.
         """

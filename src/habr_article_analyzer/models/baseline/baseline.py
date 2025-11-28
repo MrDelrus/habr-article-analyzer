@@ -1,8 +1,4 @@
-from __future__ import annotations
-
-import pickle
-from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Dict, List, Optional
 
 import numpy as np
 
@@ -15,11 +11,10 @@ from habr_article_analyzer.models.predictors.knn_predictor import KNNPredictor
 
 class BaselineWord2VecKNN(BaseHubClassifier):
     """
-    End-to-end model combining:
-        - text encoder -> text vector
-        - hub encoder -> hub vector
-        - KNN predictor -> probability
-    Works purely through encoder + predictor interfaces.
+    End-to-end model:
+        text_encoder -> text vector
+        hub_encoder -> hub vector
+        predictor -> probability
     """
 
     def __init__(
@@ -29,47 +24,36 @@ class BaselineWord2VecKNN(BaseHubClassifier):
         predictor: Optional[KNNPredictor] = None,
     ):
         if text_encoder is None or hub_encoder is None:
-            raise ValueError("Encoders must be provided")
-
+            raise ValueError(
+                "BilingualWord2VecEncoder instances must be provided for the encoders"
+            )
         self.text_encoder = text_encoder
         self.hub_encoder = hub_encoder
         self.predictor = predictor or KNNPredictor()
 
     def _encode_pair(self, text: str, hub: str) -> np.ndarray:
-        """Compute concatenated embedding of (text, hub)."""
+        """Private helper: concatenate embeddings of text and hub."""
         text_vec = self.text_encoder.encode(text)
         hub_vec = self.hub_encoder.encode(hub)
         return np.concatenate([text_vec, hub_vec])
 
-    # ------------------------------------------------------------------
-    # Interface Methods
-    # ------------------------------------------------------------------
-    def fit(
-        self,
-        texts: Iterable[str],
-        hubs: Iterable[str],
-        labels: Iterable[int],
-    ) -> None:
-        """Fit model using encoded (text, hub) pairs."""
+    # ------------------------
+    # Interface methods
+    # ------------------------
+    def predict_proba(self, text: str, hub: str) -> float:
+        return self.predictor.predict_proba(self._encode_pair(text, hub))
+
+    def fit(self, texts: List[str], hubs: List[str], labels: List[int]) -> None:
         X = np.vstack([self._encode_pair(t, h) for t, h in zip(texts, hubs)])
-        y = np.asarray(labels)
+        y = np.array(labels)
         self.predictor.fit(X, y)
 
-    def predict_proba(self, text: str, hub: str) -> float:
-        """Predict probability that text belongs to hub."""
-        pair_vec = self._encode_pair(text, hub)
-        return float(self.predictor.predict_proba(pair_vec))
+    def save(self, paths: Dict[str, str]) -> None:
+        self.text_encoder.save(paths["text_encoder"])
+        self.hub_encoder.save(paths["hub_encoder"])
+        self.predictor.save(paths["predictor"])
 
-    # ------------------------------------------------------------------
-    # Serialization (pickle)
-    # ------------------------------------------------------------------
-    def save(self, path: str | Path) -> None:
-        """Save entire model (encoders + predictor)."""
-        with open(path, "wb") as f:
-            pickle.dump(self, f)
-
-    @staticmethod
-    def load(path: str | Path) -> Any:
-        """Load model from a pickle file."""
-        with open(path, "rb") as f:
-            return pickle.load(f)
+    def load(self, paths: Dict[str, str]) -> None:
+        self.text_encoder.load(paths["text_encoder"])
+        self.hub_encoder.load(paths["hub_encoder"])
+        self.predictor.load(paths["predictor"])

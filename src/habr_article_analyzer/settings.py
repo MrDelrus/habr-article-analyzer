@@ -17,7 +17,6 @@ class Settings(BaseSettings):
 class DataSettings(BaseSettings):
     batch_size: int = 50_000
     test_size: float = 0.2
-    val_size: float = 0.2
     random_seed: int = 42
 
     top_hubs_count: int = 50
