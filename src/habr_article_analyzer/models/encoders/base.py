@@ -7,7 +7,5 @@ class TextEncoder(ABC):
 
     @abstractmethod
     def encode(self, text: str) -> Any:
-        """
-        Converts input text into a vector representation.
-        """
+        """Converts input text into a vector representation."""
         raise NotImplementedError
