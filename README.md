@@ -54,3 +54,7 @@ See the following guides in the [docs/](docs/) folder:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## AI usage
+
+GPT-based models are sometimes used to write the clear code for the [main module](src/habr_article_analyzer/).
