@@ -8,7 +8,6 @@ env/
 data/raw/
 data/interim/
 data/processed/
-models/
 logs/
 outputs/
 .ipynb_checkpoints/
