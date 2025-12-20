@@ -85,3 +85,9 @@ class HabrDataset:
             "len(dataset) is not supported for lazy datasets. "
             "Iterate over batches instead."
         )
+
+    def get_dataframe(self) -> pd.DataFrame:
+        all_rows: List[pd.DataFrame] = []
+        for batch_df in self:
+            all_rows.append(batch_df)
+        return pd.concat(all_rows, ignore_index=True)
