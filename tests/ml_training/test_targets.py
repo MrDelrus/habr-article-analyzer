@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from habr_article_analyzer.targets import Target
+from ml_training.data.targets import Target
 
 
 @pytest.fixture

@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ml_training"
+version = "0.2.0"
+description = "Python module for machine learning models training"
+authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.15"
+numpy = "^2.4.0"
+scipy = "^1.16.3"
+pandas = "^2.3.3"
+scikit-learn = "^1.8.0"
+
+[tool.poetry.extras]
+nlp = ["nltk", "pymorphy2", "sentence_transformers", "gensim"]
+gpu = ["torch", "catboost", "tensorboard"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

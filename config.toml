@@ -1,0 +1,12 @@
+[paths]
+data_dir = "data"
+models_dir = "models"
+logs_dir = "logs"
+
+[settings]
+log_level = "INFO"
+
+[data_split_settings]
+test_size = 0.2
+val_size = 0.1
+random_seed = 42

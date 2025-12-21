@@ -5,10 +5,10 @@ from typing import List
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from habr_article_analyzer.data import DEFAULT_FULL_PATH
-from habr_article_analyzer.data_loader import HabrDataset
-from habr_article_analyzer.settings import data_settings, settings
-from habr_article_analyzer.utils import save_jsonl_zst
+from ml_training.data.habr_dataset import HabrDataset
+from ml_training.data.loaders import DEFAULT_FULL_PATH
+from ml_training.ml_training.settings import data_settings, settings
+from ml_training.ml_training.utils import save_jsonl_zst
 
 logger = logging.getLogger("split_dataset")
 

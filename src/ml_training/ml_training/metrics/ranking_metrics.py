@@ -2,7 +2,7 @@ from typing import Callable
 
 import numpy as np
 
-from habr_article_analyzer.targets import Target
+from ml_training.data.targets import Target
 
 
 class RankingMetrics:

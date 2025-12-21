@@ -1,12 +1,39 @@
-[project]
+[tool.poetry]
 name = "habr_article_analyzer"
 version = "0.1.0"
 description = "Analysis tools for Habr articles dataset"
-requires-python = ">=3.11"
-dependencies = []
+authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "core", from = "src" }
+]
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.poetry.dependencies]
+python = ">=3.11,<3.15"
+ml_training = { path = "./src/ml_training", develop = true, optional = true }
+
+[tool.poetry.extras]
+backend = []
+frontend = []
+ml_training = ["ml_training"]
+notebooks = ["matplotlib", "seaborn", "jupyterlab", "wordcloud", "ipywidgets", "spacy"]
+data_io = ["requests", "zstandard", "jsonlines", "tqdm"]
+
+[tool.poetry.group.dev.dependencies]
+black = "^25.12.0"
+isort = "^7.0.0"
+flake8 = "^7.3.0"
+mypy = "^1.19.1"
+pytest = "^9.0.2"
+nbval = "^0.11.0"
+nbqa = "^1.9.1"
+pre-commit = "^4.5.1"
+semgrep = "^1.146.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 88

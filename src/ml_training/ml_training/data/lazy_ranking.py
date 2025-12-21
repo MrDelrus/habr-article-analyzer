@@ -4,7 +4,7 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from habr_article_analyzer.targets import Target
+from ml_training.data.targets import Target
 
 
 class LazyRankingDatasetBase(Dataset):

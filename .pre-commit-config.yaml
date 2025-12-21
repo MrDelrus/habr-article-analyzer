@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v6.0.0
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
@@ -15,27 +15,31 @@ repos:
       - id: black
         additional_dependencies: ["click==8.1.7"]
         args: ["--config=pyproject.toml"]
+        entry: poetry run black
 
   - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
+    rev: 7.0.0
     hooks:
       - id: isort
         args: ["--settings-path=pyproject.toml"]
+        entry: poetry run isort
 
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.9.0
     hooks:
       - id: nbqa-black
-        args: ["--nbqa-mutate"]
+        files: '^notebooks/.*\.ipynb$'
+        additional_dependencies: [black==24.4.2]
       - id: nbqa-isort
-        args: ["--nbqa-mutate"]
+        files: '^notebooks/.*\.ipynb$'
+        additional_dependencies: [isort==5.13.2]
 
   - repo: https://github.com/PyCQA/flake8
     rev: 7.1.1
     hooks:
       - id: flake8
         args: ["--config=.flake8"]
-
+        entry: poetry run flake8
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
@@ -43,11 +47,13 @@ repos:
       - id: mypy
         args: ["--config-file=pyproject.toml"]
         additional_dependencies:
-        - pydantic>=2.5
-        - pydantic-settings>=2.0
+          - pydantic>=2.5
+          - pydantic-settings>=2.0
+        entry: poetry run mypy
 
   - repo: https://github.com/returntocorp/semgrep
-    rev: v1.35.0
+    rev: v1.76.0
     hooks:
       - id: semgrep
         args: ["--config=p/r2c-security-audit"]
+        entry: poetry run semgrep
