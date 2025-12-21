@@ -4,9 +4,9 @@ from typing import Any, Iterable
 
 import numpy as np
 
-from habr_article_analyzer.models.base import BaseHubClassifier
-from habr_article_analyzer.models.encoders.base import TextEncoder
-from habr_article_analyzer.models.predictors.base import TrainablePredictor
+from ml_training.models.base import BaseHubClassifier
+from ml_training.models.encoders.base import TextEncoder
+from ml_training.models.predictors.base import TrainablePredictor
 
 
 class ModelWrapper(BaseHubClassifier):

@@ -4,7 +4,7 @@ import joblib
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-from habr_article_analyzer.models.predictors.base import TrainablePredictor
+from ml_training.models.predictors.base import TrainablePredictor
 
 
 class KNNPredictor(TrainablePredictor):
