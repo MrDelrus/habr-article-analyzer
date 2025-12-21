@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 import zstandard as zstd
 
-from habr_article_analyzer.data_loader import HabrDataset
+from ml_training.data.habr_dataset import HabrDataset
 
 
 @pytest.fixture

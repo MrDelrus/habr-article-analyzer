@@ -4,61 +4,105 @@ This document explains how to set up and work with the project environment. It p
 
 ## Developer Setup
 
-1. Create and activate a virtual environment. For Linux/macOS:
+### 1. Make sure you have Poetry installed (preferably v1.5+):
 
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+poetry --version
 ```
-python -m venv env
+
+### 2. Use the correct Python version:
+
+```bash
+python3.11 -m venv env
 source env/bin/activate
 ```
 
-- Always activate your virtual environment before working with the project
-- This prevents version conflicts between developers and ensures consistent behavior
+Or let Poetry create its virtual environment automatically:
 
-2. Install pip.and pip-tools. Use the following versions:
-
-```
-pip install "pip==25.1" "pip-tools==7.5.1"
+```bash
+poetry env use python3.11
 ```
 
-3. Install dependencies:
+### 3. Install dependencies:
 
+#### a) Base installation (without heavy extras):
+
+```bash
+poetry install
 ```
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+
+- Installs the core dependencies of the project.
+- `ml_training` is installed without optional extras (nlp, gpu).
+
+#### b) Installation with `ml_training` extras:
+
+```bash
+poetry install --extras "ml_training/nlp ml_training/gpu"
 ```
 
-- [requirements.txt](../requirements.txt) - runtime/project dependencies
-- [requirements-dev.txt](../requirements-dev.txt) - development dependencies (linters, tests, nbqa, pre-commit hooks)
+- Installs `ml_training` with optional heavy extras.
+- Use this if you need NLP models, deep learning, or GPU-enabled libraries.
 
-4. Set up pre-commit hooks:
+**Note:** heavy extras are large and may take time to install.
 
-```
+### 4. Set up pre-commit hooks:
+
+```bash
 pre-commit install
 pre-commit install --hook-type commit-msg
 ```
 
 - Ensures code is automatically checked/formatted before commits
 
-5. Deactivate the environment:
+### 5. Using the environment:
 
-```
-deactivate
+Activate before working:
+
+```bash
+poetry shell
 ```
 
-- Use this when you’re done working in the project
-- Safely returns you to your system Python environment
-- Helps prevent accidentally installing packages outside the project environment
+Or run commands directly:
+
+```bash
+poetry run python script.py
+```
+
+Deactivate when done:
+
+```bash
+exit  # or deactivate if using venv
+```
 
 ## Reviewer Setup
 
 - Reviewers **do not need** development dependencies or pre-commit hooks
-- Only [requirements.txt](../requirements.txt) is necessary:
+- Install only runtime dependencies:
 
-```
-python -m venv env
+### 1. Create and activate a Python 3.11 virtual environment:
+
+```bash
+python3.11 -m venv env
 source env/bin/activate
-pip install "pip==25.1" "pip-tools==7.5.1"
-pip install -r requirements.txt
 ```
 
-- This allows running or reviewing the project without installing linters or testing tools
+### 2. Ensure Poetry uses this Python version:
+
+```bash
+poetry env use python3.11
+```
+
+### 3. Install only runtime dependencies:
+
+```bash
+poetry install --no-dev
+```
+
+### 4. (Optional) If you need ml_training extras for NLP or GPU:
+
+```bash
+poetry install --no-dev --extras "ml_training/nlp ml_training/gpu"
+```
+
+This allows reviewers to run or test the project without installing linters, testing tools, or heavy development dependencies.

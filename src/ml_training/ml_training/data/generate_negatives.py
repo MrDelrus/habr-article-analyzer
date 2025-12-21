@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from habr_article_analyzer.data_loader import HabrDataset
-from habr_article_analyzer.settings import data_settings, settings
-from habr_article_analyzer.utils import save_jsonl_zst
+from ml_training.data.habr_dataset import HabrDataset
+from ml_training.settings import data_settings, settings
+from ml_training.utils import save_jsonl_zst
 
 logger = logging.getLogger("generate_negatives")
 

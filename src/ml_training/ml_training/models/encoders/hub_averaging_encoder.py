@@ -4,7 +4,7 @@ from typing import Any
 import numpy as np
 import torch
 
-from habr_article_analyzer.targets import Target
+from ml_training.data.targets import Target
 
 
 class HubEncoder:

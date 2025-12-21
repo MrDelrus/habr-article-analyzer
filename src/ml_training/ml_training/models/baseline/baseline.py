@@ -6,11 +6,9 @@ from typing import Any, Iterable, Optional
 
 import numpy as np
 
-from habr_article_analyzer.models.base import BaseHubClassifier
-from habr_article_analyzer.models.encoders.word2vec_encoder import (
-    BilingualWord2VecEncoder,
-)
-from habr_article_analyzer.models.predictors.knn_predictor import KNNPredictor
+from ml_training.models.base import BaseHubClassifier
+from ml_training.models.encoders.word2vec_encoder import BilingualWord2VecEncoder
+from ml_training.models.predictors.knn_predictor import KNNPredictor
 
 
 class BaselineWord2VecKNN(BaseHubClassifier):

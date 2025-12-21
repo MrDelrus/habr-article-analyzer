@@ -4,7 +4,7 @@ from typing import Iterable, List
 import numpy as np
 from gensim.models import KeyedVectors
 
-from habr_article_analyzer.models.encoders.base import TextEncoder
+from ml_training.models.encoders.base import TextEncoder
 
 
 class BilingualWord2VecEncoder(TextEncoder):
