@@ -4,7 +4,6 @@ version = "0.2.0"
 description = "Python module for machine learning models training"
 authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
 license = "MIT"
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.15"
