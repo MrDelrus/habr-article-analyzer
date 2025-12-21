@@ -1,15 +1,21 @@
-__pycache__/
+# Dev
 build/
 env/
 .venv/
 .vscode/
 .idea/
 .git/
+
+# Project directories
 data/raw/
 data/interim/
 data/processed/
 logs/
+models/
 outputs/
+
+# Cache
+*__pycache__*
 .ipynb_checkpoints/
 *.egg-info
 .mypy_cache/
