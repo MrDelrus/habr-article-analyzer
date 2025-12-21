@@ -3,7 +3,7 @@ from pathlib import Path
 import tomli
 from pydantic_settings import BaseSettings
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent  # src/core
+PROJECT_ROOT = Path(__file__).resolve().parent
 
 with open(PROJECT_ROOT / "config.toml", "rb") as f:
     config = tomli.load(f)

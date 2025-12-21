@@ -24,18 +24,10 @@ jobs:
           poetry --version
 
       - name: Install dependencies
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry install --with dev
-          poetry run pip install -e .
+        run: poetry install --with dev --extras "ml_training data_io"
 
       - name: List installed packages
-        run: poetry run pip list
+        run: poetry show
 
       - name: Run pytest for Python tests
-        run: |
-          if [ -d tests ] && [ "$(ls -A tests 2>/dev/null)" ]; then
-              poetry run pytest -m "not slow" --maxfail=1 --disable-warnings -q tests/ || [ $? -eq 5 ] || exit $?
-          else
-              echo "No Python tests found, skipping."
-          fi
+        run: poetry run pytest -m "not slow" --maxfail=1 --disable-warnings -q tests/
