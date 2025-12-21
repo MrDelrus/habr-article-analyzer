@@ -7,8 +7,8 @@ import pandas as pd
 from tqdm import tqdm
 
 from ml_training.data.habr_dataset import HabrDataset
-from ml_training.ml_training.settings import data_settings, settings
-from ml_training.ml_training.utils import save_jsonl_zst
+from ml_training.settings import data_settings, settings
+from ml_training.utils import save_jsonl_zst
 
 logger = logging.getLogger("generate_negatives")
 

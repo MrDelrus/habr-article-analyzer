@@ -9,7 +9,7 @@ import requests
 import zstandard as zstd
 from tqdm import tqdm
 
-from ml_training.ml_training.settings import settings
+from ml_training.settings import settings
 
 # Configure logging
 logger = logging.getLogger(__name__)
