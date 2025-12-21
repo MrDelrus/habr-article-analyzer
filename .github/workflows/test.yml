@@ -26,7 +26,8 @@ jobs:
       - name: Install dependencies
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          poetry install --with dev --extras ml_training
+          poetry install --with dev
+          poetry run pip install -e .
 
       - name: List installed packages
         run: poetry run pip list
