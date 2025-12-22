@@ -1,11 +1,13 @@
+import os
 from pathlib import Path
 
 import tomli
 from pydantic_settings import BaseSettings
 
-PROJECT_ROOT = Path(__file__).resolve().parent
+PROJECT_ROOT = Path(os.environ.get("PROJECT_ROOT", Path(__file__).resolve().parents[2]))
+CONFIG_PATH = Path(__file__).resolve().parent / "config.toml"
 
-with open(PROJECT_ROOT / "config.toml", "rb") as f:
+with open(CONFIG_PATH, "rb") as f:
     config = tomli.load(f)
 
 
