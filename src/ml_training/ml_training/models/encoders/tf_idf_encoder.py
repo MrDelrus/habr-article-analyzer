@@ -58,16 +58,79 @@ class TextEncoder:
         vectorizer_bytes = pickle.dumps(self.vectorizer)
         return {"max_features": self.max_features, "vectorizer_bytes": vectorizer_bytes}
 
-    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        self.max_features = state_dict["max_features"]
-        self.vectorizer = pickle.loads(state_dict["vectorizer_bytes"])
+    @classmethod
+    def load_state_dict(cls, state_dict: dict[str, Any]) -> Any:
+        encoder = cls(max_features=state_dict["max_features"])
+        encoder.max_features = state_dict["max_features"]
+        encoder.vectorizer = pickle.loads(state_dict["vectorizer_bytes"])
+        return encoder
 
     def save(self, path: Path) -> None:
         torch.save(self.state_dict(), path)
 
     @classmethod
     def load(cls, path: Path) -> Any:
+        state_dict = torch.load(path, weights_only=True)        
+        return cls.load_state_dict(state_dict)
+
+
+
+class A:
+    def __init__(self, x):
+        self.x = x
+
+
+from pathlib import Path
+from typing import Any
+import numpy as np
+import torch
+from ml_training.models.encoders.hub_averaging_encoder import HubEncoder
+from ml_training.models.encoders.tf_idf_encoder import TextEncoder
+from ml_training.models.predictors.ranking_nn import RankingModel
+from ml_training.models.wrapper import ModelWrapper
+
+
+class BoWDSSM(ModelWrapper):
+    """
+    Bag of Words encoders for text and hub + some neural layers as predictor.    
+    """
+    def __init__(
+        self, 
+        text_encoder: TextEncoder,
+        hub_encoder: HubEncoder,
+        predictor: RankingModel
+    ):
+        self.text_encoder = text_encoder
+        self.hub_encoder = hub_encoder
+        self.predictor = predictor
+    
+    def _encode_pair(self, text: str, hub: str) -> np.ndarray:
+        text_vec = self.text_encoder.transform(text)
+        hub_vec = self.hub_encoder.transform(hub)
+        return np.concatenate([text_vec, hub_vec])
+
+    def state_dict(self) -> Any:
+        return {
+            "text_encoder": self.text_encoder.state_dict(),
+            "hub_encoder": self.hub_encoder.state_dict(),
+            "predictor": self.predictor.state_dict() 
+        }
+
+    @classmethod
+    def load_state_dict(cls, state_dict: dict[str, Any]) -> Any:
+        text_encoder = TextEncoder().load_state_dict(state_dict["text_encoder"])
+        hub_encoder = HubEncoder().load_state_dict(state_dict["hub_encoder"])
+        predictor = RankingModel().load_state_dict(state_dict["predictor"])
+        return BoWDSSM(
+            text_encoder,
+            hub_encoder,
+            predictor
+        )
+
+    def save(self, path: str | Path) -> None:
+        torch.save(self.state_dict(), path)
+
+    @classmethod
+    def load(cls, path: str | Path) -> Any:
         state_dict = torch.load(path, weights_only=True)
-        encoder = cls(max_features=state_dict["max_features"])
-        encoder.load_state_dict(state_dict)
-        return encoder
+        return cls.load_state_dict(state_dict)

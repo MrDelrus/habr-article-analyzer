@@ -47,11 +47,13 @@ class HubEncoder:
 
         return {"dim": self.dim, "hub_to_vec": hub_to_vec_tensors}
 
-    def load_state_dict(self, state_dict: Any) -> None:
-        self.dim = state_dict["dim"]
-        self.hub_to_vec = {
+    @classmethod
+    def load_state_dict(cls, state_dict: Any) -> Any:
+        encoder = cls(dim=state_dict["dim"])
+        encoder.hub_to_vec = {
             hub: vec.numpy() for hub, vec in state_dict["hub_to_vec"].items()
         }
+        return encoder
 
     def save(self, path: Path | str) -> None:
         torch.save(self.state_dict(), path)
@@ -59,6 +61,4 @@ class HubEncoder:
     @classmethod
     def load(cls, path: Path | str) -> Any:
         state_dict = torch.load(path, weights_only=True)
-        encoder = cls(dim=state_dict["dim"])
-        encoder.load_state_dict(state_dict)
-        return encoder
+        return cls.load_state_dict(state_dict)
