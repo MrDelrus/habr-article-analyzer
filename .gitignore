@@ -20,3 +20,6 @@ outputs/
 *.egg-info
 .mypy_cache/
 .pytest_cache/
+
+# AWS
+aws_credentials/
