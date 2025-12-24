@@ -6,7 +6,8 @@ authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
 license = "MIT"
 readme = "README.md"
 packages = [
-    { include = "core", from = "src" }
+    { include = "core", from = "src" },
+    { include = "ml_training", from = "src" }
 ]
 
 [tool.poetry.dependencies]
@@ -30,6 +31,8 @@ tqdm = { version = "^4.67.1", optional = true }
 notebook = "^7.5.1"
 gensim = "^4.4.0"
 torch = "^2.9.1"
+pandas = "^2.3.3"
+scikit-learn = "^1.8.0"
 
 [tool.poetry.extras]
 backend = []

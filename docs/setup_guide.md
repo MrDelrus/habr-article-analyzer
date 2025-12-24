@@ -14,13 +14,6 @@ poetry --version
 ### 2. Use the correct Python version:
 
 ```bash
-python3.11 -m venv env
-source env/bin/activate
-```
-
-Or let Poetry create its virtual environment automatically:
-
-```bash
 poetry env use python3.11
 ```
 

@@ -4,7 +4,7 @@ from typing import Any
 import numpy as np
 import torch
 
-from ml_training.data.targets import Target
+from ml_training.ml_training.data.targets import Target
 
 
 class HubEncoder:
@@ -15,7 +15,7 @@ class HubEncoder:
         self.hub_to_vec = {}
         self.dim = dim
 
-    def fit(self, target: Target, text_embeddings: np.ndarray) -> np.ndarray:
+    def fit(self, target: Target, text_embeddings: np.ndarray) -> None:
         assert self.dim == text_embeddings.shape[1], "{} != {}".format(
             self.dim, text_embeddings.shape[1]
         )
