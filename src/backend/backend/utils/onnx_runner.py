@@ -15,12 +15,11 @@ class ONNXModelRunner:
             arr[0, i] = ord(c)
         return arr
 
-    def forward(self, str1: str, str2: str) -> float:
-        str1_tensor = self._str_to_tensor(str1)
-        str2_tensor = self._str_to_tensor(str2)
-        inputs = {
-            "str1": str1_tensor,
-            "str2": str2_tensor,
-        }
+    def forward(self, text: str, hub: str) -> float:
+        str1_tensor = self._str_to_tensor(text)
+        str2_tensor = self._str_to_tensor(hub)
+
+        inputs = {"text": str1_tensor, "hub": str2_tensor}
         output = self.session.run(None, inputs)
+
         return float(output[0][0])
