@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "habr-frontend"
+version = "0.1.0"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "^1.28.0"
+requests = "^2.31.0"
+pandas = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
