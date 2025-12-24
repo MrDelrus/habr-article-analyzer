@@ -1,3 +1,5 @@
+import os
+
 import boto3
 
 from backend.config import settings
@@ -20,3 +22,15 @@ def list_models() -> set[str]:
                 models.add(key)
 
     return models
+
+
+def download_model(model_key: str) -> str:
+    local_dir = os.path.join("models_cache")
+    os.makedirs(local_dir, exist_ok=True)
+    local_path = os.path.join(local_dir, os.path.basename(model_key))
+
+    if not os.path.exists(local_path):
+        _s3_client.download_file(
+            Bucket=settings.S3_BUCKET_NAME, Key=model_key, Filename=local_path
+        )
+    return local_path
