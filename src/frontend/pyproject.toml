@@ -5,20 +5,18 @@ description = "Frontend for Habr Article Analyzer"
 authors = ["Sergiy Yarigin <sergiyar55@gmail.com>"]
 license = "MIT"
 packages = [
-    { include = "core", from = "src" },
-    { include = "frontend", from = "src" }
+    { include = "frontend", from = "src" },
+    { include = "core", from = "src" }
 ]
 
-
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.11,<3.13"
 streamlit = "^1.28.0"
 pandas = "^2.0.0"
 requests = "^2.31.0"
 pydantic = "^2.5.0"
 pydantic-settings = "^2.1.0"
 python-dotenv = "^1.0.0"
-
 
 [build-system]
 requires = ["poetry-core"]
