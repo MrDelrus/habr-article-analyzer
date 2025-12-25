@@ -4,10 +4,9 @@ import sys
 import pandas as pd
 import requests
 import streamlit as st
+from config import settings
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-DEFAULT_API_URL = os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
+DEFAULT_API_URL = settings.api_base_url
 
 st.set_page_config(page_title="Habr Article Analyzer", layout="wide")
 st.title("Habr Article Analyzer")
@@ -17,7 +16,6 @@ if "api_url" not in st.session_state:
     st.session_state.api_url = DEFAULT_API_URL
 
 BASE_API_URL = st.session_state.api_url
-
 if "uploaded_file_name" not in st.session_state:
     st.session_state.uploaded_file_name = None
     st.session_state.uploaded_file_content = ""
