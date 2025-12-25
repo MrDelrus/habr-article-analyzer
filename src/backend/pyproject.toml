@@ -23,6 +23,7 @@ sqlalchemy = "^2.0.45"
 uuid = "^1.30"
 pydantic = "^2.12.5"
 datetime = "^6.0"
+asyncpg = "^0.31.0"
 
 
 [build-system]
