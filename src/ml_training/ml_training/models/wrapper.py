@@ -38,7 +38,7 @@ class ModelWrapper(BaseHubClassifier):
 
     def predict(self, text: str, hub: str) -> int:
         vec = self._encode_pair(text, hub)
-        return self.predictor.predict(vec)
+        return int(self.predictor.predict(vec))
 
     def predict_proba(self, text: str, hub: str) -> float:
         vec = self._encode_pair(text, hub)

@@ -1,11 +1,15 @@
+from typing import Any
+
 import numpy as np
 import torch.nn as nn
 
 
 class RankingModel(nn.Module):
+    model: nn.Sequential
+
     def __init__(
         self,
-        input_dim: int,
+        input_dim: int = 10000,
         hidden_dims: list[int] = [512, 256, 128],
         dropout: float = 0.1,
     ):
@@ -30,5 +34,5 @@ class RankingModel(nn.Module):
 
         self.model = nn.Sequential(*layers)
 
-    def forward(self, x: np.ndarray) -> np.ndarray:
+    def forward(self, x: np.ndarray) -> Any:
         return self.model(x).squeeze(-1)

@@ -58,9 +58,12 @@ class TextEncoder:
         vectorizer_bytes = pickle.dumps(self.vectorizer)
         return {"max_features": self.max_features, "vectorizer_bytes": vectorizer_bytes}
 
-    def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        self.max_features = state_dict["max_features"]
-        self.vectorizer = pickle.loads(state_dict["vectorizer_bytes"])
+    @classmethod
+    def load_state_dict(cls, state_dict: dict[str, Any]) -> Any:
+        encoder = cls(max_features=state_dict["max_features"])
+        encoder.max_features = state_dict["max_features"]
+        encoder.vectorizer = pickle.loads(state_dict["vectorizer_bytes"])
+        return encoder
 
     def save(self, path: Path) -> None:
         torch.save(self.state_dict(), path)
@@ -68,6 +71,4 @@ class TextEncoder:
     @classmethod
     def load(cls, path: Path) -> Any:
         state_dict = torch.load(path, weights_only=True)
-        encoder = cls(max_features=state_dict["max_features"])
-        encoder.load_state_dict(state_dict)
-        return encoder
+        return cls.load_state_dict(state_dict)

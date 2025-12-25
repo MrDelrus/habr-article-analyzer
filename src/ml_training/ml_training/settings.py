@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    project_root: Path = Path(__file__).resolve().parent.parent.parent
+    project_root: Path = Path(__file__).resolve().parent.parent.parent.parent
     data_dir: Path = project_root / "data"
     raw_data_dir: Path = data_dir / "raw"
     processed_data_dir: Path = data_dir / "processed"
