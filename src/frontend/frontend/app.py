@@ -7,7 +7,6 @@ import streamlit as st
 from core.schemas.api.forward import ForwardRequest, ForwardResponse
 from core.schemas.api.history import HistoryResponse
 from core.schemas.api.models import ModelListResponse
-from core.schemas.api.stats import StatsResponse
 from frontend.config import settings
 
 DEFAULT_API_URL = settings.api_base_url
@@ -75,7 +74,7 @@ def handle_api_error(response: requests.Response) -> None:
         st.error(f"Unknown error: {response.status_code}")
 
 
-tab1, tab2, tab3 = st.tabs(["Prediction", "Request History", "Service Statistics"])
+tab1, tab2 = st.tabs(["Prediction", "Request History"])
 
 
 with tab1:
@@ -246,49 +245,6 @@ with tab2:
         st.error("Request timeout")
     except Exception as e:
         st.error(f"Error loading history: {e}")
-
-
-with tab3:
-    st.header("Service Statistics")
-
-    try:
-        stats_response = requests.get(
-            f"{BASE_API_URL}/stats",
-            timeout=settings.request_timeout,
-        )
-
-        if stats_response.status_code == 200:
-            stats_data = StatsResponse.model_validate(stats_response.json())
-
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.metric("Total Requests", stats_data.total_queries)
-            with col2:
-                st.metric("Avg Text Length", f"{stats_data.text_length_mean:.1f} chars")
-            with col3:
-                st.metric("Avg Time (ms)", f"{stats_data.latency_mean:.1f}")
-            with col4:
-                st.metric("P99 Time (ms)", f"{stats_data.latency_p99:.1f}")
-
-            col5, col6 = st.columns(2)
-            with col5:
-                st.metric("P50 Time (ms)", f"{stats_data.latency_p50:.1f}")
-            with col6:
-                st.metric("P95 Time (ms)", f"{stats_data.latency_p95:.1f}")
-
-            with st.expander("Detailed Data (JSON)"):
-                st.json(stats_data.model_dump())
-        else:
-            st.error(
-                f"Failed to load statistics. Error code: {stats_response.status_code}"
-            )
-
-    except requests.exceptions.ConnectionError:
-        st.error("Failed to connect to server")
-    except requests.exceptions.Timeout:
-        st.error("Request timeout")
-    except Exception as e:
-        st.error(f"Error loading statistics: {e}")
 
 
 with st.sidebar:
