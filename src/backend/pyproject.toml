@@ -4,7 +4,7 @@ version = "1.0.0"
 description = "FastAPI backend"
 authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
 license = "MIT"
-readme = "README.md"
+
 packages = [
     { include = "core", from = "src" },
     { include = "backend", from = "src" }
