@@ -2,12 +2,14 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from backend.routes.forward_routes import router as forward_router
+from backend.routes.history_routes import router as history_router
 from backend.routes.models_routes import router as models_router
 from core.schemas.api.forward import ForwardResponse
 
 app = FastAPI(title="Backend API")
 app.include_router(forward_router)
 app.include_router(models_router)
+app.include_router(history_router)
 
 
 @app.exception_handler(HTTPException)
