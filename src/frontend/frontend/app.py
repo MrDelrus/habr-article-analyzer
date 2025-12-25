@@ -10,7 +10,6 @@ from core.schemas.api.models import ModelListResponse
 from core.schemas.api.stats import StatsResponse
 from frontend.config import settings
 
-
 DEFAULT_API_URL = settings.api_base_url
 DEFAULT_MODEL_NAME = "BoWDSSM"
 SUPPORTED_FILE_TYPES = ["txt", "md"]
@@ -45,7 +44,7 @@ def load_available_models() -> list[str]:
             return [model.name for model in models_data.models]
     except Exception as e:
         st.warning(f"Failed to load models: {e}")
-    
+
     return [DEFAULT_MODEL_NAME]
 
 
@@ -56,9 +55,7 @@ def decode_file_content(bytes_data: bytes) -> str:
             return bytes_data.decode(encoding)
         except UnicodeDecodeError:
             continue
-    raise UnicodeDecodeError(
-        "Failed to decode file with supported encodings"
-    )
+    raise ValueError("Failed to decode file with supported encodings")
 
 
 def handle_api_error(response: requests.Response) -> None:
@@ -69,7 +66,7 @@ def handle_api_error(response: requests.Response) -> None:
         404: "Endpoint not found",
         422: f"Validation error: {response.json()}",
     }
-    
+
     if response.status_code in error_messages:
         st.error(error_messages[response.status_code])
     elif response.status_code >= 500:
@@ -120,11 +117,7 @@ with tab1:
         st.subheader("Article Analysis")
 
         available_models = load_available_models()
-        model_name = st.selectbox(
-            "Model name:",
-            options=available_models,
-            index=0
-        )
+        model_name = st.selectbox("Model name:", options=available_models, index=0)
 
         st.markdown("---")
         st.markdown("**Or enter text manually:**")
@@ -146,7 +139,9 @@ with tab1:
 
     if submitted and input_text:
         try:
-            hubs_list = [hub.strip() for hub in hubs_input.split(",")] if hubs_input else None
+            hubs_list = (
+                [hub.strip() for hub in hubs_input.split(",")] if hubs_input else None
+            )
             request_data = ForwardRequest(
                 model_name=model_name.strip(),
                 text=input_text,
@@ -169,11 +164,15 @@ with tab1:
                     st.success("Request processed successfully")
 
                     if result.result:
-                        df = pd.DataFrame([
-                            {"hub": item.hub, "score": item.score}
-                            for item in result.result
-                        ])
-                        df = df.sort_values("score", ascending=False).reset_index(drop=True)
+                        df = pd.DataFrame(
+                            [
+                                {"hub": item.hub, "score": item.score}
+                                for item in result.result
+                            ]
+                        )
+                        df = df.sort_values("score", ascending=False).reset_index(
+                            drop=True
+                        )
                         st.dataframe(df, use_container_width=True)
 
                         if len(df) > 0:
@@ -194,7 +193,9 @@ with tab1:
                     handle_api_error(response)
 
             except requests.exceptions.ConnectionError:
-                st.error("Failed to connect to server. Make sure the backend is running.")
+                st.error(
+                    "Failed to connect to server. Make sure the backend is running."
+                )
             except requests.exceptions.Timeout:
                 st.error("Request timeout. Server is taking too long to respond.")
             except Exception as e:
@@ -220,20 +221,24 @@ with tab2:
             history_data = HistoryResponse.model_validate(history_response.json())
 
             if history_data.history:
-                history_df = pd.DataFrame([
-                    {
-                        "username": item.username,
-                        "query_name": item.query_name,
-                        "code_name": item.code_name,
-                        "timestamp": item.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
-                    }
-                    for item in history_data.history
-                ])
+                history_df = pd.DataFrame(
+                    [
+                        {
+                            "username": item.username,
+                            "query_name": item.query_name,
+                            "code_name": item.code_name,
+                            "timestamp": item.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+                        }
+                        for item in history_data.history
+                    ]
+                )
                 st.dataframe(history_df, use_container_width=True)
             else:
                 st.info("Request history is empty")
         else:
-            st.error(f"Failed to load history. Error code: {history_response.status_code}")
+            st.error(
+                f"Failed to load history. Error code: {history_response.status_code}"
+            )
 
     except requests.exceptions.ConnectionError:
         st.error("Failed to connect to server")
@@ -274,7 +279,9 @@ with tab3:
             with st.expander("Detailed Data (JSON)"):
                 st.json(stats_data.model_dump())
         else:
-            st.error(f"Failed to load statistics. Error code: {stats_response.status_code}")
+            st.error(
+                f"Failed to load statistics. Error code: {stats_response.status_code}"
+            )
 
     except requests.exceptions.ConnectionError:
         st.error("Failed to connect to server")
