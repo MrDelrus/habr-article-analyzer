@@ -3504,6 +3504,24 @@ typing_extensions = ">=4.7.1"
 reference = ["Pillow"]
 
 [[package]]
+name = "onnx-ir"
+version = "0.1.13"
+description = "Efficient in-memory representation for ONNX"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "onnx_ir-0.1.13-py3-none-any.whl", hash = "sha256:2791493d1529fdbea60c257dc7bc0933dc812e6d68f4976d8b59aa7b4c2de8cf"},
+    {file = "onnx_ir-0.1.13.tar.gz", hash = "sha256:e08f00d30579bdbff2152692a6f1bc1f0523d3321ac6348aadcd40595e56231e"},
+]
+
+[package.dependencies]
+ml_dtypes = ">=0.5.0"
+numpy = "*"
+onnx = ">=1.16"
+typing_extensions = ">=4.10"
+
+[[package]]
 name = "onnxruntime"
 version = "1.23.2"
 description = "ONNX Runtime is a runtime accelerator for Machine Learning models"
@@ -3542,6 +3560,26 @@ numpy = ">=1.21.6"
 packaging = "*"
 protobuf = "*"
 sympy = "*"
+
+[[package]]
+name = "onnxscript"
+version = "0.5.7"
+description = "Naturally author ONNX functions and models using a subset of Python"
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "onnxscript-0.5.7-py3-none-any.whl", hash = "sha256:f94a66059c56d13b44908e9b7fd9dae4b4faa6681c784f3fd4c29cfa863e454e"},
+    {file = "onnxscript-0.5.7.tar.gz", hash = "sha256:480d572451bc233ed7f742b5005cb0c899594b2fdc28e15167dab26f7fd777ad"},
+]
+
+[package.dependencies]
+ml_dtypes = "*"
+numpy = "*"
+onnx = ">=1.16"
+onnx_ir = ">=0.1.12,<2"
+packaging = "*"
+typing_extensions = ">=4.10"
 
 [[package]]
 name = "opentelemetry-api"
@@ -5455,6 +5493,22 @@ files = [
 ]
 
 [[package]]
+name = "skl2onnx"
+version = "1.19.1"
+description = "Convert scikit-learn models to ONNX"
+optional = false
+python-versions = ">=3.8"
+groups = ["main"]
+files = [
+    {file = "skl2onnx-1.19.1-py3-none-any.whl", hash = "sha256:fddf2f49e3ffc355f332e676b43c6fec5e63797627925b279d9f5b2c4d0c81a7"},
+    {file = "skl2onnx-1.19.1.tar.gz", hash = "sha256:0c105f2a3b87a624dd218d1fb98fdd19cf1bf6217190d25ce7e15484127d0e5d"},
+]
+
+[package.dependencies]
+onnx = ">=1.2.1"
+scikit-learn = ">=1.1"
+
+[[package]]
 name = "smart-open"
 version = "7.5.0"
 description = "Utils for streaming large files (S3, HDFS, GCS, SFTP, Azure Blob Storage, gzip, bz2, zst...)"
@@ -6663,4 +6717,4 @@ notebooks = ["ipywidgets", "matplotlib", "seaborn", "spacy", "wordcloud"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "c9e842284af327bfa91edeccf96aaf8d5d1a18ac98d52d1c5cf94e730e588bd5"
+content-hash = "0ee1933e0a610f162cbc4e300d7a3046f93b8a97b39606fd651a7acbe4cc32b8"
