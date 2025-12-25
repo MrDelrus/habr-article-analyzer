@@ -51,7 +51,7 @@ async def forward(
         runner = get_model_runner(model_key)
         scores = []
         for hub in hubs_to_score:
-            score = runner.forward(request.text, hub)
+            score = runner.predict_proba(request.text, hub)
             scores.append(HubScore(hub=hub, score=score))
 
         scores.sort(key=lambda x: x.score, reverse=True)

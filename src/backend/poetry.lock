@@ -548,6 +548,17 @@ files = [
 ]
 
 [[package]]
+name = "pathlib"
+version = "1.0.1"
+description = "Object-oriented filesystem paths"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pathlib-1.0.1-py3-none-any.whl", hash = "sha256:f35f95ab8b0f59e6d354090350b44a80a80635d22efdedfa84c7ad1cf0a74147"},
+    {file = "pathlib-1.0.1.tar.gz", hash = "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"},
+]
+
+[[package]]
 name = "protobuf"
 version = "6.33.2"
 description = ""
@@ -1418,4 +1429,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "eea3cff9ef07354de037d67d5679a6658d134abbb1d8b4bcd9f5d4b901a20bb6"
+content-hash = "f4b281a5390f0aad74e790757ab96563fcbbc880e50018b69ebea08d00be8fae"
