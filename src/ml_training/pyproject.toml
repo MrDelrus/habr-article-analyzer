@@ -16,8 +16,7 @@ onnxruntime = "^1.23.2"
 skl2onnx = "^1.19.1"
 onnxscript = "^0.5.7"
 torch = "^2.9.1"
-pandas = "^2.3.3"
-scikit-learn = "^1.8.0"
+
 
 # nlp
 nltk = { version = "^3.9.2", optional = true }
