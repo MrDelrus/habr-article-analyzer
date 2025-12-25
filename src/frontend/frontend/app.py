@@ -224,9 +224,9 @@ with tab2:
                 history_df = pd.DataFrame(
                     [
                         {
-                            "username": item.username,
-                            "query_name": item.query_name,
-                            "code_name": item.code_name,
+                            "query_id": str(item.query_id),
+                            "endpoint": item.endpoint,
+                            "status_code": item.code_status,
                             "timestamp": item.timestamp.strftime("%Y-%m-%d %H:%M:%S"),
                         }
                         for item in history_data.history
@@ -241,7 +241,7 @@ with tab2:
             )
 
     except requests.exceptions.ConnectionError:
-        st.error("Failed to connect to server")
+        st.error("Failed to connect to server. Please check your connection settings.")
     except requests.exceptions.Timeout:
         st.error("Request timeout")
     except Exception as e:
