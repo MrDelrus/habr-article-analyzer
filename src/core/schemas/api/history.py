@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class HistoryItem(BaseModel):
@@ -11,8 +11,7 @@ class HistoryItem(BaseModel):
     code_status: int
     timestamp: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class HistoryResponse(BaseModel):
