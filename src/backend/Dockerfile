@@ -6,6 +6,14 @@ RUN apt-get update && apt-get install -y \
     curl build-essential git && \
     rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+    apt-get install -y locales && \
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LANG=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
 RUN curl -sSL https://install.python-poetry.org | python3 - --yes
 
 ENV PATH="/root/.local/bin:$PATH"
