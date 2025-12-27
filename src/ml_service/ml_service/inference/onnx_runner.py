@@ -7,7 +7,7 @@ from typing import Dict
 import numpy as np
 import onnxruntime as ort
 
-from ml_service.inference import BaseHubClassifierInference
+from ml_service.inference.interface import BaseHubClassifierInference
 
 
 class ONNXInference(BaseHubClassifierInference):

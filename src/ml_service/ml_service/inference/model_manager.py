@@ -4,7 +4,8 @@ from fastapi import HTTPException
 
 from ml_service import settings
 from ml_service.client import download_model
-from ml_service.inference import BaseHubClassifierInference, ONNXInference
+from ml_service.inference.interface import BaseHubClassifierInference
+from ml_service.inference.onnx_runner import ONNXInference
 
 
 @lru_cache(maxsize=10)
