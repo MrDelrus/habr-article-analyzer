@@ -7,13 +7,13 @@ from typing import Dict
 import numpy as np
 import onnxruntime as ort
 
-from backend.utils.s3_loader import download_model
+from ml_service.inference import BaseHubClassifierInference
 
 
-class ONNXInference:
+class ONNXInference(BaseHubClassifierInference):
 
-    def __init__(self, model_key: str | Path):
-        self.model_path = download_model(model_key)
+    def __init__(self, model_path: str | Path):
+        self.model_path = model_path
 
         self._tmpdir = tempfile.TemporaryDirectory()
         self._extract_model()

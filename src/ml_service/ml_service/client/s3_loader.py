@@ -2,7 +2,7 @@ import os
 
 import boto3
 
-from backend.config import settings
+from ml_service import settings
 
 _s3_client = boto3.client(
     "s3",

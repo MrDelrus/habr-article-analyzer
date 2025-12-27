@@ -2,7 +2,7 @@
 name = "ml_training"
 version = "0.2.0"
 description = "Python module for machine learning models training"
-authors = ["Nikita Zolin <mrdelrus@yandex.ru>"]
+authors = ["Nikita Zolin <mrdelrus@yandex.ru>", "Sergiy Yarigin <sergiyar55@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]

@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class HistoryItem(BaseModel):
@@ -15,4 +15,4 @@ class HistoryItem(BaseModel):
 
 
 class HistoryResponse(BaseModel):
-    history: List[HistoryItem]
+    history: List[HistoryItem] = Field(..., description="List of last queries.")
