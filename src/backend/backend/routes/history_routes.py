@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.db import get_db
-from backend.models.history import History
-from core.schemas.api.history import HistoryItem, HistoryResponse
+from backend import get_db
+from backend.models import History
+from core.schemas.api import HistoryItem, HistoryResponse
 
 router = APIRouter(prefix="/history", tags=["history"])
 

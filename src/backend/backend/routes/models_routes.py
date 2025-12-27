@@ -1,31 +1,38 @@
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, status
+import httpx
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.config import settings
-from backend.db import get_db
-from backend.models.history import History
-from backend.utils.s3_loader import list_models
-from core.schemas.api.models import ModelItem, ModelListResponse
+from backend import get_db, settings
+from backend.models import History
+from core.schemas.api import ModelListResponse
 
 router = APIRouter(prefix="/models", tags=["models"])
 
+ML_MODELS_ENDPOINT = f"{settings.ML_SERVICE_URL}/v0/models"
+
 
 @router.get("", response_model=ModelListResponse)
-async def get_models(
-    db: AsyncSession = Depends(get_db),
-) -> ModelListResponse:
+async def get_models(db: AsyncSession = Depends(get_db)) -> ModelListResponse:
     query_id = uuid4()
     http_status = status.HTTP_200_OK
 
     try:
-        models = list_models()
-        cleaned_models = [
-            ModelItem(name=model.replace(f".{settings.MODEL_EXTENSION}", ""))
-            for model in models
-        ]
-        return ModelListResponse(models=cleaned_models)
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.get(
+                ML_MODELS_ENDPOINT,
+                headers={"x-internal-key": settings.INTERNAL_API_KEY},
+            )
+
+            if resp.status_code != 200:
+                raise HTTPException(
+                    status_code=resp.status_code,
+                    detail=f"ML service error: {resp.text}",
+                )
+
+            ml_response = ModelListResponse.model_validate(resp.json())
+            return ml_response
 
     finally:
         db.add(

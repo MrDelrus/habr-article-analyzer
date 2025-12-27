@@ -23,8 +23,6 @@ async def forward(request: ForwardRequest) -> ForwardResponse:
             score = runner.predict_proba(request.text, hub)
             scores.append(HubScore(hub=hub, score=score))
 
-        scores.sort(key=lambda x: x.score, reverse=True)
-
         return ForwardResponse(result=scores)
 
     except HTTPException:

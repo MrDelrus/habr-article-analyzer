@@ -1,30 +1,16 @@
 from uuid import uuid4
 
+import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.config import settings
-from backend.db import get_db
-from backend.models.history import History
-from backend.utils.model_manager import get_model_runner
-from backend.utils.s3_loader import list_models
-from core.schemas.api.forward import ForwardRequest, ForwardResponse, HubScore
+from backend import get_db, settings
+from backend.models import History
+from core.schemas.api import ForwardRequest, ForwardResponse
 
 router = APIRouter(prefix="/forward", tags=["forward"])
 
-
-DEFAULT_HUBS = [
-    "closet",
-    "itcompanies",
-    "infosecurity",
-    "programming",
-    "webdev",
-    "popular_science",
-    "javascript",
-    "gadgets",
-    "finance",
-    "business-laws",
-]
+ML_FORWARD_ENDPOINT = f"{settings.ML_SERVICE_URL}/v0/forward"
 
 
 @router.post("", response_model=ForwardResponse)
@@ -35,28 +21,25 @@ async def forward(
     query_id = uuid4()
     http_status = status.HTTP_200_OK
 
-    model_key = f"{request.model_name}.{settings.MODEL_EXTENSION}"
-
     try:
-        available_models = list_models()
-        if model_key not in available_models:
-            http_status = status.HTTP_400_BAD_REQUEST
-            raise HTTPException(
-                status_code=http_status,
-                detail=f"Model '{model_key}' is not found",
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.post(
+                ML_FORWARD_ENDPOINT,
+                headers={"x-internal-key": settings.INTERNAL_API_KEY},
+                json=request.model_dump(),
             )
 
-        hubs_to_score = request.hubs or DEFAULT_HUBS
+            if resp.status_code != 200:
+                raise HTTPException(
+                    status_code=resp.status_code,
+                    detail=f"ML service error: {resp.text}",
+                )
 
-        runner = get_model_runner(model_key)
-        scores = []
-        for hub in hubs_to_score:
-            score = runner.predict_proba(request.text, hub)
-            scores.append(HubScore(hub=hub, score=score))
+            ml_response = ForwardResponse.model_validate(resp.json())
+            if ml_response.result:
+                ml_response.result.sort(key=lambda x: x.score, reverse=True)
 
-        scores.sort(key=lambda x: x.score, reverse=True)
-
-        return ForwardResponse(result=scores)
+            return ml_response
 
     except HTTPException:
         raise
@@ -65,7 +48,7 @@ async def forward(
         http_status = status.HTTP_500_INTERNAL_SERVER_ERROR
         raise HTTPException(
             status_code=http_status,
-            detail=f"Error during model inference: {str(exception)}",
+            detail=f"Error during ML service call: {str(exception)}",
         )
 
     finally:
