@@ -1,11 +1,14 @@
 from uuid import uuid4
 
-import httpx
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend import get_db, settings
-from backend.models import History
+from backend import settings
+from backend.clients import (
+    DatabaseClient,
+    MLServiceClient,
+    get_database_client,
+    get_ml_service_client,
+)
 from core.schemas.api import ModelListResponse
 
 router = APIRouter(prefix="/models", tags=["models"])
@@ -14,32 +17,34 @@ ML_MODELS_ENDPOINT = f"{settings.ML_SERVICE_URL}/v0/models"
 
 
 @router.get("", response_model=ModelListResponse)
-async def get_models(db: AsyncSession = Depends(get_db)) -> ModelListResponse:
+async def get_models(
+    ml_service_client: MLServiceClient = Depends(get_ml_service_client),
+    db: DatabaseClient = Depends(get_database_client),
+) -> ModelListResponse:
     query_id = uuid4()
-    http_status = status.HTTP_200_OK
+    http_status = 200
 
     try:
-        async with httpx.AsyncClient(timeout=10) as client:
-            resp = await client.get(
-                ML_MODELS_ENDPOINT,
-                headers={"x-internal-key": settings.INTERNAL_API_KEY},
-            )
+        response: ModelListResponse = await ml_service_client.models()
+        return response
 
-            if resp.status_code != 200:
-                raise HTTPException(
-                    status_code=resp.status_code,
-                    detail=f"ML service error: {resp.text}",
-                )
+    except HTTPException as exception:
+        http_status = exception.status_code
+        raise HTTPException(
+            status_code=http_status, detail=f"ML Service error: {str(exception)}"
+        )
 
-            ml_response = ModelListResponse.model_validate(resp.json())
-            return ml_response
+    except Exception as exception:
+        http_status = status.HTTP_500_INTERNAL_SERVER_ERROR
+        raise HTTPException(
+            status_code=http_status,
+            detail=f"ML service error: {str(exception)}",
+        )
 
     finally:
-        db.add(
-            History(
-                query_id=query_id,
-                endpoint="/models",
-                code_status=http_status,
+        try:
+            await db.add_history(
+                query_id=query_id, endpoint="/models", status=http_status
             )
-        )
-        await db.commit()
+        except Exception:
+            pass
