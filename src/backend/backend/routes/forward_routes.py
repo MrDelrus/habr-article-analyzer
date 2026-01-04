@@ -2,12 +2,14 @@ from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from backend.auth import get_current_user
 from backend.clients import (
     DatabaseClient,
     MLServiceClient,
     get_database_client,
     get_ml_service_client,
 )
+from backend.models import User
 from core.schemas.api import ForwardRequest, ForwardResponse
 
 router = APIRouter(prefix="/forward", tags=["forward"])
@@ -17,7 +19,8 @@ router = APIRouter(prefix="/forward", tags=["forward"])
 async def forward(
     request: ForwardRequest,
     ml_service_client: MLServiceClient = Depends(get_ml_service_client),
-    db: DatabaseClient = Depends(get_database_client),
+    database_client: DatabaseClient = Depends(get_database_client),
+    current_user: User = Depends(get_current_user),
 ) -> ForwardResponse:
     query_id = uuid4()
     http_status = status.HTTP_200_OK
@@ -41,8 +44,11 @@ async def forward(
 
     finally:
         try:
-            await db.add_history(
-                query_id=query_id, endpoint="/forward", status=http_status
+            await database_client.add_history(
+                query_id=query_id,
+                endpoint="/forward",
+                status=http_status,
+                user_id=current_user.user_id,
             )
         except Exception:
             pass
