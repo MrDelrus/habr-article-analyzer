@@ -10,23 +10,34 @@ _s3_client = boto3.client(
 )
 
 
+def get_local_dir(dir_name: str = "models_cache") -> str:
+    local_dir = os.path.join("models_cache")
+    os.makedirs(local_dir, exist_ok=True)
+    return local_dir
+
+
 def list_models() -> set[str]:
-    paginator = _s3_client.get_paginator("list_objects_v2")
+    local_dir = get_local_dir()
+    local_models = set(os.listdir(local_dir))
 
-    models: set[str] = set()
+    remote_models: set[str] = set()
+    try:
+        paginator = _s3_client.get_paginator("list_objects_v2")
 
-    for page in paginator.paginate(Bucket=settings.S3_BUCKET_NAME):
-        for obj in page.get("Contents", []):
-            key = obj["Key"]
-            if key.endswith(settings.MODEL_EXTENSION):
-                models.add(key)
+        for page in paginator.paginate(Bucket=settings.S3_BUCKET_NAME):
+            for obj in page.get("Contents", []):
+                key = obj["Key"]
+                if key.endswith(settings.MODEL_EXTENSION):
+                    remote_models.add(key)
 
-    return models
+    except Exception:
+        ...
+
+    return local_models.union(remote_models)
 
 
 def download_model(model_key: str) -> str:
-    local_dir = os.path.join("models_cache")
-    os.makedirs(local_dir, exist_ok=True)
+    local_dir = get_local_dir()
     local_path = os.path.join(local_dir, os.path.basename(model_key))
 
     if not os.path.exists(local_path):

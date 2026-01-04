@@ -28,6 +28,7 @@ RUN poetry install --only main --no-root
 
 COPY src/ml_service/ml_service /app/ml_service
 COPY src/core /app/core
+COPY models_cache models_cache
 
 EXPOSE 8000
 

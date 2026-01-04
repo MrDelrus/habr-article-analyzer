@@ -24,3 +24,5 @@ outputs/
 # AWS
 aws_credentials/
 .env
+models_cache/bowdssm.zip
+models_cache/dummy.zip
