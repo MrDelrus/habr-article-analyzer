@@ -68,7 +68,7 @@ class DatabaseClient:
 
 
 async def get_database_client() -> AsyncGenerator[DatabaseClient, None]:
-    client = DatabaseClient(settings.DATABASE_URL)
+    client = DatabaseClient(url=settings.DATABASE_URL)
     try:
         yield client
     finally:

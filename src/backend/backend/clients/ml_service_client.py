@@ -48,11 +48,11 @@ class MLServiceClient:
         await self._client.aclose()
 
 
-async def get_ml_service_client(
-    x_internal_key: str = settings.INTERNAL_API_KEY,
-    endpoints: dict[str, str] = ML_ENDPOINTS,
-) -> AsyncGenerator[MLServiceClient, None]:
-    ml_service_client = MLServiceClient(x_internal_key, endpoints)
+async def get_ml_service_client() -> AsyncGenerator[MLServiceClient, None]:
+    ml_service_client = MLServiceClient(
+        x_internal_key=settings.INTERNAL_API_KEY,
+        endpoints=ML_ENDPOINTS,
+    )
     try:
         yield ml_service_client
     finally:
