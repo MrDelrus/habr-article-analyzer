@@ -47,7 +47,7 @@ async def forward(
             await database_client.add_history(
                 query_id=query_id,
                 endpoint="/forward",
-                status=http_status,
+                code_status=http_status,
                 user_id=current_user.user_id,
             )
         except Exception:
