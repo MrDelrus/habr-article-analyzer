@@ -1,3 +1,4 @@
+import json
 import os
 
 import boto3
@@ -11,7 +12,7 @@ _s3_client = boto3.client(
 
 
 def get_local_dir(dir_name: str = "models_cache") -> str:
-    local_dir = os.path.join("models_cache")
+    local_dir = os.path.join(dir_name)
     os.makedirs(local_dir, exist_ok=True)
     return local_dir
 
@@ -45,3 +46,22 @@ def download_model(model_key: str) -> str:
             Bucket=settings.S3_BUCKET_NAME, Key=model_key, Filename=local_path
         )
     return local_path
+
+
+def get_hubs(hubs_key: str) -> list[str]:
+    local_dir = get_local_dir("hubs_cache")
+    local_hubs = os.path.join(local_dir, os.path.basename(hubs_key))
+
+    if not os.path.exists(local_hubs):
+        _s3_client.download_file(
+            Bucket=settings.S3_BUCKET_NAME, Key=hubs_key, Filename=local_hubs
+        )
+    with open(local_hubs, "r") as hubs_fd:
+        hubs = json.load(hubs_fd)
+    if not isinstance(hubs, list):
+        raise Exception("Hubs data are corrupted")
+    for hub in hubs:
+        if not isinstance(hub, str):
+            raise Exception("Hub: {} is corrupted".format(hub))
+
+    return hubs

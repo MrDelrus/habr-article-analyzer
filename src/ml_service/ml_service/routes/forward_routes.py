@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from core.schemas.api import ForwardRequest, ForwardResponse, HubScore
-from ml_service import DEFAULT_HUBS
+from ml_service.client.s3_loader import get_hubs
 from ml_service.inference import get_model_runner
 from ml_service.security import verify_internal_key
 
@@ -12,10 +12,10 @@ router = APIRouter(
 )
 
 
-@router.post("", response_model=ForwardResponse)
+@router.post("", response_model=ForwardResponse)  # type: ignore
 async def forward(request: ForwardRequest) -> ForwardResponse:
     try:
-        hubs_to_score = request.hubs or DEFAULT_HUBS
+        hubs_to_score = request.hubs or get_hubs("hubs.json")
 
         runner = get_model_runner(request.model_name)
         scores = []

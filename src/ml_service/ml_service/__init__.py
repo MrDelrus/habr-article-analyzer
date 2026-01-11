@@ -1,3 +1,3 @@
-from ml_service.config import DEFAULT_HUBS, settings
+from ml_service.config import settings
 
-__all__ = ["settings", "DEFAULT_HUBS"]
+__all__ = ["settings"]
