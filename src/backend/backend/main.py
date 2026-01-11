@@ -1,18 +1,21 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse
+from contextlib import asynccontextmanager
+from typing import AsyncGenerator
 
-from backend.routes.forward_routes import router as forward_router
-from backend.routes.history_routes import router as history_router
-from backend.routes.models_routes import router as models_router
-from core.schemas.api.forward import ForwardResponse
+from fastapi import FastAPI
 
-app = FastAPI(title="Backend API")
+from backend.clients.database_client import engine
+from backend.routes import auth_router, forward_router, history_router, models_router
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+    yield
+    await engine.dispose()
+
+
+app = FastAPI(title="Backend API", lifespan=lifespan)
+
+app.include_router(auth_router)
 app.include_router(forward_router)
 app.include_router(models_router)
 app.include_router(history_router)
-
-
-@app.exception_handler(HTTPException)
-async def http_exception_handler(_: Request, exc: HTTPException) -> JSONResponse:
-    payload = ForwardResponse(result=None, error=str(exc.detail)).model_dump()
-    return JSONResponse(status_code=exc.status_code, content=payload)

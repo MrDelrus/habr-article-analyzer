@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "ml-service"
+version = "0.1.0"
+description = "ML Service for hub prediction"
+authors = ["Nikita Zolin <mrdelrus@yandex.ru>", "Sergiy Yarigin <sergiyar55@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "ml_service", from = "src" },
+    { include = "core", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.128.0"
+boto3 = "^1.42.17"
+pydantic = "^2.12.5"
+pydantic-settings = "^2.12.0"
+uvicorn = "^0.40.0"
+numpy = "^2.4.0"
+onnxruntime = "^1.23.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

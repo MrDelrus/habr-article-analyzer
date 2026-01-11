@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ModelItem(BaseModel):
@@ -8,4 +8,4 @@ class ModelItem(BaseModel):
 
 
 class ModelListResponse(BaseModel):
-    models: List[ModelItem]
+    models: List[ModelItem] = Field(..., description="List of available models")
