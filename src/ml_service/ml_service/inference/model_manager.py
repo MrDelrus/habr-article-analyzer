@@ -10,9 +10,8 @@ from ml_service.inference.onnx_runner import ONNXInference
 
 @lru_cache(maxsize=10)
 def get_model_runner(model_name: str) -> BaseHubClassifierInference:
-    model_path = f"{model_name}.{settings.MODEL_EXTENSION}"
-    if model_name == "dummy":
-        s3_model_path = download_model(model_path)
-        return ONNXInference(s3_model_path)
+    model_file = f"{model_name}.{settings.MODEL_EXTENSION}"
+    model_path = download_model(model_file)
+    return ONNXInference(model_path)
 
     raise HTTPException(f"Model '{model_name}' is not found")
